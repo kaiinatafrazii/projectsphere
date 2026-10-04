@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 50" width="260" height="50">
+  <defs>
+    <linearGradient id="psGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+  </defs>
+  <!-- Sphere Logo Icon -->
+  <circle cx="25" cy="25" r="20" fill="url(#psGrad)" />
+  <circle cx="25" cy="25" r="13" fill="none" stroke="#ffffff" stroke-width="2.5" opacity="0.9" />
+  <path d="M17 25h16 M25 17v16" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" />
+  <!-- Brand Text -->
+  <text x="56" y="32" font-family="'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="800" fill="#0f172a" letter-spacing="-0.5">Project<tspan fill="#4f46e5">Sphere</tspan></text>
+</svg>
