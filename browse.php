@@ -2,6 +2,8 @@
 /**
  * ProjectSphere - Browse & Search Approved Projects
  */
+$pageTitle = 'Browse student projects | ProjectSphere';
+$pageDescription = 'Search approved student capstone projects by title, category, student, and technology.';
 require_once __DIR__ . '/includes/header.php';
 
 // Get query filters

@@ -15,19 +15,38 @@ try {
 }
 
 $pageTitle = $pageTitle ?? 'ProjectSphere - Student Project Showcase & Evaluation Portal';
+$isHomePage = basename($_SERVER['SCRIPT_NAME'] ?? '') === 'index.php';
+$currentPage = basename($_SERVER['SCRIPT_NAME'] ?? '');
+$pageDescription = $pageDescription ?? match ($currentPage) {
+    'index.php' => 'Explore approved student capstone projects, faculty evaluations, and academic rankings on ProjectSphere.',
+    'browse.php' => 'Search approved student capstone projects by title, category, student, and technology.',
+    'project-details.php' => 'Explore a student capstone project, its documentation, and published faculty evaluation.',
+    'login.php' => 'Sign in to the ProjectSphere student project and faculty evaluation portal.',
+    'register.php' => 'Create a student account to submit capstone projects and receive faculty feedback.',
+    default => 'ProjectSphere supports student project submissions, faculty evaluation, and approved academic showcases.'
+};
+$requestHost = preg_replace('/[^A-Za-z0-9.:-]/', '', $_SERVER['HTTP_HOST'] ?? 'localhost');
+$requestScheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https://' : 'http://';
+$socialPreview = $requestScheme . $requestHost . base_url('assets/images/social-preview.svg');
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="ProjectSphere is an academic portal for submitting, evaluating, ranking, and showcasing student diploma/degree projects.">
+    <meta name="description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:title" content="<?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="<?= htmlspecialchars($requestScheme . $requestHost . ($_SERVER['REQUEST_URI'] ?? '/'), ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:image" content="<?= htmlspecialchars($socialPreview, ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:image:alt" content="ProjectSphere student project showcase and faculty evaluation rubric">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:description" content="<?= htmlspecialchars($pageDescription, ENT_QUOTES, 'UTF-8') ?>">
+    <meta name="twitter:image" content="<?= htmlspecialchars($socialPreview, ENT_QUOTES, 'UTF-8') ?>">
+    <link rel="icon" type="image/svg+xml" href="<?= base_url('assets/images/projectsphere-mark.svg') ?>">
     <title><?= htmlspecialchars($pageTitle) ?></title>
-    
-    <!-- Google Fonts: Inter -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -36,34 +55,41 @@ $pageTitle = $pageTitle ?? 'ProjectSphere - Student Project Showcase & Evaluatio
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     
     <!-- Custom ProjectSphere CSS -->
-    <link rel="stylesheet" href="<?= base_url('assets/css/style.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/style.css?v=' . filemtime(__DIR__ . '/../assets/css/style.css')) ?>">
 </head>
 <body>
 
 <!-- Main Navigation Bar -->
+<?php if (empty($hideMainNavigation)): ?>
 <nav class="navbar navbar-expand-lg navbar-projectsphere sticky-top">
     <div class="container">
         <a class="navbar-brand" href="<?= base_url() ?>">
             <img src="<?= base_url('assets/images/logo.svg') ?>" alt="ProjectSphere Logo">
         </a>
         
-        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         
         <div class="collapse navbar-collapse" id="navbarMain">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+                <?php if ($isHomePage): ?>
                 <li class="nav-item">
-                    <a class="nav-link <?= (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : '' ?>" href="<?= base_url() ?>">
-                        <i class="bi bi-house-door me-1"></i>Home
-                    </a>
+                    <a class="nav-link active" href="#home">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= (basename($_SERVER['PHP_SELF']) == 'browse.php') ? 'active' : '' ?>" href="<?= base_url('browse.php') ?>">
-                        <i class="bi bi-compass me-1"></i>Explore Projects
-                    </a>
+                    <a class="nav-link" href="#about">About</a>
                 </li>
-                
+                <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+                <li class="nav-item"><a class="nav-link" href="#how-it-works">How it works</a></li>
+                <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                <?php else: ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= base_url() ?>"><i class="bi bi-house-door me-1"></i>Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?= ($currentPage === 'browse.php') ? 'active' : '' ?>" href="<?= base_url('browse.php') ?>"><i class="bi bi-compass me-1"></i>Explore Projects</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
                         <i class="bi bi-grid me-1"></i>Categories
@@ -90,15 +116,18 @@ $pageTitle = $pageTitle ?? 'ProjectSphere - Student Project Showcase & Evaluatio
                         <i class="bi bi-trophy me-1 text-warning"></i>Leaderboard
                     </a>
                 </li>
+                <?php endif; ?>
             </ul>
 
             <!-- Search Quick Bar -->
+            <?php if (!$isHomePage): ?>
             <form class="d-flex me-3" action="<?= base_url('browse.php') ?>" method="GET">
                 <div class="input-group input-group-sm">
                     <input class="form-control" type="search" name="search" placeholder="Search projects..." aria-label="Search" style="width: 180px;">
                     <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
                 </div>
             </form>
+            <?php endif; ?>
 
             <!-- Authentication User Actions -->
             <div class="d-flex align-items-center gap-2">
@@ -139,6 +168,7 @@ $pageTitle = $pageTitle ?? 'ProjectSphere - Student Project Showcase & Evaluatio
         </div>
     </div>
 </nav>
+<?php endif; ?>
 
 <!-- Flash Alerts Notification System -->
 <?php if (isset($_SESSION['flash_success']) || isset($_SESSION['flash_error']) || isset($_SESSION['flash_info'])): ?>

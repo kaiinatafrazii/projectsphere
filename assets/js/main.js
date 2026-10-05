@@ -3,11 +3,66 @@
  */
 
 document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('input[type="password"]').forEach(function (passwordInput) {
+        let inputGroup = passwordInput.closest('.input-group');
+        if (!inputGroup) {
+            inputGroup = document.createElement('div');
+            inputGroup.className = 'input-group';
+            passwordInput.parentNode.insertBefore(inputGroup, passwordInput);
+            inputGroup.appendChild(passwordInput);
+        }
+
+        const toggleButton = document.createElement('button');
+        toggleButton.type = 'button';
+        toggleButton.className = 'btn btn-outline-secondary password-toggle';
+        toggleButton.setAttribute('aria-label', 'Show password');
+        toggleButton.setAttribute('aria-pressed', 'false');
+        toggleButton.innerHTML = '<i class="bi bi-eye" aria-hidden="true"></i>';
+        inputGroup.appendChild(toggleButton);
+
+        toggleButton.addEventListener('click', function () {
+            const showPassword = passwordInput.type === 'password';
+            passwordInput.type = showPassword ? 'text' : 'password';
+            toggleButton.setAttribute('aria-label', showPassword ? 'Hide password' : 'Show password');
+            toggleButton.setAttribute('aria-pressed', String(showPassword));
+            toggleButton.innerHTML = `<i class="bi ${showPassword ? 'bi-eye-slash' : 'bi-eye'}" aria-hidden="true"></i>`;
+        });
+    });
+
+    const cookieNotice = document.getElementById('cookieNotice');
+    const dismissCookieNotice = document.getElementById('dismissCookieNotice');
+    if (cookieNotice && dismissCookieNotice) {
+        try {
+            cookieNotice.hidden = localStorage.getItem('ps_cookie_notice') === 'dismissed';
+        } catch (error) {
+            cookieNotice.hidden = false;
+        }
+        dismissCookieNotice.addEventListener('click', function () {
+            try {
+                localStorage.setItem('ps_cookie_notice', 'dismissed');
+            } catch (error) {
+                cookieNotice.hidden = true;
+                return;
+            }
+            cookieNotice.hidden = true;
+        });
+    }
+
     // 1. Initialize Bootstrap Tooltips if available
     if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
         const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
         tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    }
+
+    const mainNavigation = document.getElementById('navbarMain');
+    if (mainNavigation && typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
+        mainNavigation.querySelectorAll('a[href^="#"]').forEach(function (link) {
+            link.addEventListener('click', function () {
+                const collapse = bootstrap.Collapse.getInstance(mainNavigation);
+                if (collapse) collapse.hide();
+            });
         });
     }
 

@@ -129,8 +129,6 @@ Open your web browser and navigate to:
 http://localhost/projectsphere/
 ```
 
-*(Alternatively, you can test via PHP built-in server by running `php -S localhost:8000` inside the project folder).*
-
 ---
 
 ## 7. Database Architecture & Schema
@@ -155,58 +153,88 @@ The database consists of **10 normalized tables**:
 ```
 projectsphere/
 ├── index.php                 # Home page (Hero, Top Ranked, Featured, Categories, Stats)
+The repository root is the PHP web root for the XAMPP setup described above. Public routes stay at the root to preserve existing URLs; role-specific pages, API handlers, shared code, static assets, and uploads are grouped by purpose. There is no React/Vite build step.
+
 ├── login.php                 # Unified Student & Teacher Login
 ├── register.php              # Student Registration Form
-├── logout.php                # Session Destroyer
-├── browse.php                # Project Catalog with Search, Category & Tech filters
-├── project-details.php       # Public project showcase (No private source code)
+├── .htaccess                 # HTTPS redirect, sitemap/robots routes, custom 404
+├── index.php                 # Public homepage
+├── browse.php                # Approved project catalog and filters
+├── search.php                # Search compatibility route
+├── project-details.php       # Public project showcase
+├── login.php                 # Student and faculty login
+├── register.php              # Student registration
+├── logout.php                # Session logout
+├── privacy.php               # Privacy policy draft
+├── terms.php                 # Terms of service draft
+├── 404.php                   # Custom not-found page
+├── install.php               # Local database installer
+├── robots.php                # robots.txt response
+├── sitemap.php               # Dynamic XML sitemap
+├── README.md
 │
-├── student/
-│   ├── dashboard.php         # Student metrics & recent submissions
-│   ├── submit-project.php    # Submission form (PDF, screenshots, private ZIP, team)
-│   ├── my-projects.php       # Student projects tracker & marks modal
-│   ├── edit-project.php      # Edit pending submission draft
-│   └── profile.php           # Student profile & password update
+├── admin/                    # Faculty dashboard and management pages
+│   ├── login.php
+│   ├── dashboard.php
+│   ├── projects.php
+│   ├── review-project.php
+│   ├── download-source.php   # Authenticated private archive download
+│   ├── evaluate.php
+│   ├── rankings.php
+│   ├── categories.php
+│   ├── students.php
+│   ├── feedback.php
+│   └── profile.php
 │
-├── admin/
-│   ├── login.php             # Dedicated Faculty Login Portal
-│   ├── dashboard.php         # 6-Metric admin dashboard & review queue
-│   ├── projects.php          # Manage all projects (Filter, approve, reject, delete)
-│   ├── review-project.php    # Full submission view with private code download
-│   ├── evaluate.php          # 100-Mark scoring rubric & live calculator
-│   ├── rankings.php          # Global & Category leaderboard
-│   ├── categories.php        # Manage categories (Add, Edit, Delete)
-│   ├── students.php          # Student roster & submission statistics
-│   └── profile.php           # Faculty evaluator profile
+├── api/                      # Same-origin PHP JSON endpoints
+│   ├── config.php
+│   ├── auth.php
+│   ├── projects.php
+│   ├── evaluations.php
+│   ├── rankings.php
+│   ├── categories.php
+│   ├── students.php
+│   ├── feedback.php
+│   └── stats.php
 │
-├── includes/
-│   ├── db.php                # PDO Database connection
-│   ├── auth.php              # Session & role authorization helpers
-│   ├── functions.php         # Ranking algorithm, file upload, sanitization
-│   ├── header.php            # Global navigation header
-│   ├── footer.php            # Global college footer
-│   ├── student-navbar.php    # Student sidebar navigation
-│   └── admin-navbar.php      # Admin sidebar navigation
+├── assets/                   # CSS, JavaScript, and public images
+│   ├── css/style.css
+│   ├── js/main.js
+│   └── images/
 │
-├── uploads/
-│   ├── project-images/       # Uploaded screenshots & thumbnails
-│   ├── documents/            # Uploaded PDF documentation
-│   └── private-code/         # Private ZIP archives (Faculty access only)
+├── database/                 # SQL schema; direct web access denied
+│   ├── .htaccess
+│   └── projectsphere.sql
 │
-├── assets/
-│   ├── css/
-│   │   └── style.css         # Modern college portal design system
-│   ├── js/
-│   │   └── main.js           # Live evaluation score calculator & dynamic rows
-│   └── images/               # Project badges, avatars & SVGs
+├── includes/                 # Shared PHP services and layout
+│   ├── .htaccess              # Direct web access denied
+│   ├── db.php
+│   ├── auth.php
+│   ├── functions.php
+│   ├── header.php
+│   ├── footer.php
+│   ├── admin-navbar.php
+│   └── student-navbar.php
 │
-└── database/
-    └── projectsphere.sql     # Complete database schema + seed data
+├── student/                  # Student dashboard and submission workflows
+│   ├── dashboard.php
+│   ├── submit-project.php
+│   ├── edit-project.php
+│   ├── my-projects.php
+│   ├── my-evaluations.php
+│   └── profile.php
+│
+├── project/                  # Legacy route aliases
+│   └── details.php           # Forwards to project-details.php
+│
+└── uploads/                  # Uploaded project files
+   ├── documents/
+   ├── project-images/
+   └── private-code/         # Direct web access denied
+      └── .htaccess
 ```
 
----
-
-## 9. Viva / Presentation Guide for Students
+Private source archives are downloaded through `admin/download-source.php`, which requires a faculty session. The `includes/`, `database/`, and `uploads/private-code/` directories also deny direct HTTP access.
 
 When presenting this project to external college examiners:
 1. **Explain the Architecture:** "We followed a modular PHP architecture using PDO prepared statements to guard against SQL Injection and `password_hash()` with Bcrypt to secure credentials."

@@ -208,7 +208,7 @@ require_once __DIR__ . '/../includes/header.php';
                         </p>
 
                         <?php if (!empty($project['private_source_code_file'])): ?>
-                            <a href="<?= base_url($project['private_source_code_file']) ?>" class="btn btn-warning btn-sm w-100 mb-2 fw-semibold" download>
+                            <a href="<?= base_url('admin/download-source.php?id=' . (int)$project['id']) ?>" class="btn btn-warning btn-sm w-100 mb-2 fw-semibold">
                                 <i class="bi bi-file-earmark-zip-fill me-1"></i>Download Source Code (.ZIP)
                             </a>
                         <?php else: ?>

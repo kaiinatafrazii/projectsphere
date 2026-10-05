@@ -21,8 +21,8 @@ $formData = [
     'roll_no'    => '',
     'email'      => '',
     'username'   => '',
-    'department' => 'Computer Engineering',
-    'semester'   => '6th Semester',
+    'department' => '',
+    'semester'   => '',
     'phone'      => ''
 ];
 
@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $formData['roll_no']    = strtoupper(trim($_POST['roll_no'] ?? ''));
     $formData['email']      = strtolower(trim($_POST['email'] ?? ''));
     $formData['username']   = strtolower(trim($_POST['username'] ?? ''));
-    $formData['department'] = trim($_POST['department'] ?? 'Computer Engineering');
-    $formData['semester']   = trim($_POST['semester'] ?? '6th Semester');
+    $formData['department'] = trim($_POST['department'] ?? '');
+    $formData['semester']   = trim($_POST['semester'] ?? '');
     $formData['phone']      = trim($_POST['phone'] ?? '');
     $password               = $_POST['password'] ?? '';
     $confirmPassword        = $_POST['confirm_password'] ?? '';
@@ -49,6 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     if (empty($formData['username']) || !preg_match('/^[a-zA-Z0-9_]{3,30}$/', $formData['username'])) {
         $errors[] = 'Username must be 3-30 characters (letters, numbers, underscores only).';
+    }
+    if (!in_array($formData['department'], ['Computer Engineering', 'Information Technology', 'Electronics & Telecommunication', 'Electrical Engineering'], true)) {
+        $errors[] = 'Please select a department or branch.';
+    }
+    if (!in_array($formData['semester'], ['6th Semester (Final Year)', '5th Semester', '4th Semester', 'Graduated'], true)) {
+        $errors[] = 'Please select a semester or year.';
     }
     if (strlen($password) < 6) {
         $errors[] = 'Password must be at least 6 characters long.';
@@ -137,10 +143,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = 'Student Registration - ProjectSphere';
+$hideMainNavigation = true;
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container py-5">
+    <a class="auth-home-link" href="<?= base_url() ?>"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Home</a>
     <div class="row justify-content-center">
         <div class="col-lg-7 col-md-9">
             <div class="card border shadow-sm p-4 p-md-5" style="border-radius: 16px;">
@@ -185,8 +193,9 @@ require_once __DIR__ . '/includes/header.php';
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label">Department / Branch</label>
-                            <select name="department" class="form-select">
+                            <label class="form-label">Department / Branch <span class="text-danger">*</span></label>
+                            <select name="department" class="form-select" required>
+                                <option value="" disabled <?= ($formData['department'] === '') ? 'selected' : '' ?>>Select department / branch</option>
                                 <option value="Computer Engineering" <?= ($formData['department'] === 'Computer Engineering') ? 'selected' : '' ?>>Computer Engineering</option>
                                 <option value="Information Technology" <?= ($formData['department'] === 'Information Technology') ? 'selected' : '' ?>>Information Technology</option>
                                 <option value="Electronics & Telecommunication" <?= ($formData['department'] === 'Electronics & Telecommunication') ? 'selected' : '' ?>>Electronics & Telecommunication</option>
@@ -195,8 +204,9 @@ require_once __DIR__ . '/includes/header.php';
                         </div>
 
                         <div class="col-md-6">
-                            <label class="form-label">Semester / Year</label>
-                            <select name="semester" class="form-select">
+                            <label class="form-label">Semester / Year <span class="text-danger">*</span></label>
+                            <select name="semester" class="form-select" required>
+                                <option value="" disabled <?= ($formData['semester'] === '') ? 'selected' : '' ?>>Select semester / year</option>
                                 <option value="6th Semester (Final Year)" <?= ($formData['semester'] === '6th Semester (Final Year)') ? 'selected' : '' ?>>6th Semester (Final Year)</option>
                                 <option value="5th Semester" <?= ($formData['semester'] === '5th Semester') ? 'selected' : '' ?>>5th Semester</option>
                                 <option value="4th Semester" <?= ($formData['semester'] === '4th Semester') ? 'selected' : '' ?>>4th Semester</option>

@@ -14,7 +14,7 @@ function base_url(string $path = ''): string {
     if ($pos !== false) {
         $root = substr($scriptName, 0, $pos + strlen('/projectsphere'));
     } else {
-        // Hosted on virtual host or root (like php -S localhost:8000)
+        // Hosted on a virtual host or at the web root
         $root = '';
     }
     

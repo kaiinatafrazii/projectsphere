@@ -1,5 +1,14 @@
 </main>
 
+<aside class="cookie-notice" id="cookieNotice" aria-label="Cookie information" hidden>
+    <div>
+        <strong>Essential cookies</strong>
+        <p>ProjectSphere uses session cookies for sign-in and portal requests. No analytics or advertising cookies are configured. <a href="<?= base_url('privacy.php') ?>">Privacy policy draft</a></p>
+    </div>
+    <button class="btn btn-primary btn-sm" type="button" id="dismissCookieNotice">Got it</button>
+</aside>
+
+<?php if ($isHomePage): ?>
 <!-- Footer -->
 <footer class="footer-projectsphere">
     <div class="container">
@@ -33,7 +42,6 @@
                     <li class="mb-2"><a href="<?= base_url('register.php') ?>"><i class="bi bi-person-plus me-1"></i>Student Registration</a></li>
                     <li class="mb-2"><a href="<?= base_url('admin/login.php') ?>"><i class="bi bi-shield-check me-1"></i>Faculty / Admin Portal</a></li>
                     <li class="mb-2"><a href="<?= base_url('admin/dashboard.php') ?>"><i class="bi bi-clipboard-data me-1"></i>Evaluator Dashboard</a></li>
-                    <li class="mb-2"><a href="<?= base_url('install.php') ?>"><i class="bi bi-gear me-1"></i>Database Setup (install.php)</a></li>
                 </ul>
             </div>
 
@@ -46,6 +54,10 @@
                 </p>
                 <div class="text-secondary small mt-3">
                     <i class="bi bi-check2-circle text-success me-1"></i>PHP 8.2 &bull; MySQL &bull; Bootstrap 5
+                </div>
+                <div class="small mt-3">
+                    <a class="d-block mb-2" href="<?= base_url('privacy.php') ?>">Privacy policy draft</a>
+                    <a class="d-block" href="<?= base_url('terms.php') ?>">Terms of service draft</a>
                 </div>
             </div>
         </div>
@@ -62,6 +74,7 @@
         </div>
     </div>
 </footer>
+<?php endif; ?>
 
 <!-- Bootstrap 5 JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

@@ -74,10 +74,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $pageTitle = 'Login - ProjectSphere Portal';
+$hideMainNavigation = true;
 require_once __DIR__ . '/includes/header.php';
 ?>
 
 <div class="container py-5">
+    <a class="auth-home-link" href="<?= base_url() ?>"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to Home</a>
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
             <div class="card border shadow-sm p-4 p-md-5" style="border-radius: 16px;">

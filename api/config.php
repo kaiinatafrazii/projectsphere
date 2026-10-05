@@ -7,12 +7,6 @@
 error_reporting(E_ALL);
 ini_set('display_errors', '0');
 
-// CORS Headers for React Frontend
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
-header("Access-Control-Allow-Origin: {$origin}");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
 header("Content-Type: application/json; charset=UTF-8");
 
 // Handle OPTIONS preflight request immediately
@@ -50,23 +44,10 @@ function get_json_input(): array {
 }
 
 /**
- * Fetch Current Authenticated User (Supports Session or Header)
+ * Fetch Current Authenticated User from the server-side session
  */
 function get_current_user_data(PDO $pdo): ?array {
     $userId = $_SESSION['user_id'] ?? null;
-
-    // Optional: Check custom authorization header if session is empty
-    if (!$userId && isset($_SERVER['HTTP_AUTHORIZATION'])) {
-        $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
-        if (preg_match('/Bearer\s+(.*)$/i', $authHeader, $matches)) {
-            $token = $matches[1];
-            // Format: user_id:token or base64
-            $parts = explode(':', base64_decode($token));
-            if (count($parts) >= 1 && is_numeric($parts[0])) {
-                $userId = (int)$parts[0];
-            }
-        }
-    }
 
     if (!$userId) {
         return null;

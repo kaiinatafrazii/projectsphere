@@ -154,7 +154,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                             <div class="mb-3">
                                 <label class="form-label">Email Address</label>
-                                <input type="email" class="form-control bg-light" value="<?= htmlspecialchars($student['email']) ?>" disabled>
+                                <div><a class="profile-email-link" href="mailto:<?= htmlspecialchars($student['email'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($student['email']) ?></a></div>
                             </div>
 
                             <div class="row g-2 mb-3">

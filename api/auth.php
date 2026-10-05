@@ -47,13 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'login') {
         }
 
         $userData = get_current_user_data($pdo);
-        // Generate client token for convenience
-        $token = base64_encode($user['id'] . ':' . sha1($user['password']));
-
         json_response([
             'success' => true,
             'message' => 'Login successful',
-            'token'   => $token,
             'user'    => $userData
         ]);
     } else {
@@ -115,12 +111,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'login') {
         $_SESSION['roll_no']    = $rollNo;
 
         $userData = get_current_user_data($pdo);
-        $token = base64_encode($newUid . ':' . sha1($hash));
-
         json_response([
             'success' => true,
             'message' => 'Student registration successful!',
-            'token'   => $token,
             'user'    => $userData
         ], 201);
 

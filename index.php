@@ -2,14 +2,9 @@
 /**
  * ProjectSphere - Home Page
  */
-$pageTitle = 'ProjectSphere - Student Project Showcase & Evaluation Portal';
+$pageTitle = 'ProjectSphere | Student project showcase';
+$pageDescription = 'Explore approved student capstone projects, faculty evaluations, and academic rankings on ProjectSphere.';
 require_once __DIR__ . '/includes/header.php';
-
-// Fetch Statistics
-$statTotalProjects = $pdo->query("SELECT COUNT(*) FROM projects")->fetchColumn();
-$statApproved = $pdo->query("SELECT COUNT(*) FROM projects WHERE status = 'approved'")->fetchColumn();
-$statStudents = $pdo->query("SELECT COUNT(*) FROM students")->fetchColumn();
-$statCategories = $pdo->query("SELECT COUNT(*) FROM project_categories")->fetchColumn();
 
 // Fetch Top Ranked Projects (Approved with evaluations)
 $topRankQuery = "
@@ -52,70 +47,65 @@ $catQuery = "
 $categories = $pdo->query($catQuery)->fetchAll();
 ?>
 
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-7 text-center text-lg-start">
-                <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold mb-3">
-                    <i class="bi bi-mortarboard-fill me-1"></i> Academic Project Repository & Evaluation
-                </span>
-                <h1 class="display-4 fw-extrabold lh-tight mb-3">
-                    Showcase, Evaluate & Inspire Through <span class="text-gradient">Student Innovation</span>
-                </h1>
-                <p class="lead text-secondary mb-4">
-                    ProjectSphere is a centralized college portal where computer engineering students submit final-year capstone projects, faculty review and award marks, and students learn from approved peer innovations in a secure, code-protected environment.
-                </p>
-                <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3">
-                    <a href="<?= base_url('student/submit-project.php') ?>" class="btn btn-primary btn-lg shadow-sm">
-                        <i class="bi bi-cloud-arrow-up-fill me-2"></i>Submit Your Project
-                    </a>
-                    <a href="<?= base_url('browse.php') ?>" class="btn btn-outline-secondary btn-lg bg-white">
-                        <i class="bi bi-search me-2"></i>Explore Projects
-                    </a>
-                </div>
-
-                <div class="d-flex align-items-center justify-content-center justify-content-lg-start gap-4 mt-4 pt-2 text-secondary small">
-                    <div><i class="bi bi-shield-check text-success me-1"></i>Protected Source Code</div>
-                    <div><i class="bi bi-award-fill text-warning me-1"></i>100-Mark Rubric</div>
-                    <div><i class="bi bi-graph-up-arrow text-primary me-1"></i>Live Rankings</div>
-                </div>
+<section class="hero-section" id="home">
+    <div class="container home-hero-layout">
+        <div class="home-hero-copy">
+            <p class="home-eyebrow">ProjectSphere / Student work, in focus</p>
+            <h1>Good work deserves a clear place to be seen.</h1>
+            <p class="home-hero-intro">A college project portal for students to share capstones, faculty to review them consistently, and peers to learn from approved work.</p>
+            <div class="home-hero-actions">
+                <a href="<?= base_url('browse.php') ?>" class="btn btn-primary btn-lg">Explore student projects</a>
+                <a href="<?= base_url(is_student() ? 'student/submit-project.php' : 'login.php') ?>" class="home-secondary-link">Submit a project <span aria-hidden="true">&#8599;</span></a>
             </div>
-
-            <!-- Statistics Grid -->
-            <div class="col-lg-5">
-                <div class="row g-3">
-                    <div class="col-6">
-                        <div class="hero-stats-card text-center">
-                            <i class="bi bi-folder-fill fs-2 text-primary mb-2 d-block"></i>
-                            <div class="stat-number"><?= $statTotalProjects ?></div>
-                            <div class="stat-label">Total Projects</div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="hero-stats-card text-center">
-                            <i class="bi bi-check-circle-fill fs-2 text-success mb-2 d-block"></i>
-                            <div class="stat-number"><?= $statApproved ?></div>
-                            <div class="stat-label">Approved Projects</div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="hero-stats-card text-center">
-                            <i class="bi bi-people-fill fs-2 text-info mb-2 d-block"></i>
-                            <div class="stat-number"><?= $statStudents ?></div>
-                            <div class="stat-label">Registered Students</div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="hero-stats-card text-center">
-                            <i class="bi bi-diagram-3-fill fs-2 text-warning mb-2 d-block"></i>
-                            <div class="stat-number"><?= $statCategories ?></div>
-                            <div class="stat-label">Categories</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <p class="home-hero-note">Approved project showcases. Private source code stays restricted to faculty.</p>
         </div>
+
+        <div class="rubric-preview" aria-label="Faculty evaluation rubric framework, totaling 100 points">
+            <div class="rubric-preview-header">
+                <div><p class="preview-kicker">Faculty evaluation</p><h2>One shared rubric</h2></div>
+                <span class="rubric-total">100 <small>points</small></span>
+            </div>
+            <div class="rubric-rows">
+                <div class="rubric-row"><span>Innovation</span><strong>20</strong><span class="rubric-line"><i style="width:66.67%"></i></span></div>
+                <div class="rubric-row"><span>Functionality</span><strong>30</strong><span class="rubric-line"><i style="width:100%"></i></span></div>
+                <div class="rubric-row"><span>UI &amp; experience</span><strong>20</strong><span class="rubric-line"><i style="width:66.67%"></i></span></div>
+                <div class="rubric-row"><span>Technology use</span><strong>15</strong><span class="rubric-line"><i style="width:50%"></i></span></div>
+                <div class="rubric-row"><span>Docs &amp; presentation</span><strong>15</strong><span class="rubric-line"><i style="width:50%"></i></span></div>
+            </div>
+            <p class="rubric-caption">The published faculty scoring framework</p>
+        </div>
+    </div>
+</section>
+
+<section class="home-content-section" id="about">
+    <div class="container home-content-layout">
+        <p class="home-eyebrow">About ProjectSphere</p>
+        <div>
+            <h2>A shared place for student capstones and faculty review.</h2>
+            <p>Students submit their academic projects and supporting materials. Faculty review each submission using a common scoring rubric. Approved projects become a reference point for the wider student community.</p>
+        </div>
+    </div>
+</section>
+
+<section class="home-content-section home-features-section" id="features">
+    <div class="container">
+        <div class="home-section-heading">
+            <p class="home-eyebrow">Features</p>
+            <h2>Everything follows the project lifecycle.</h2>
+        </div>
+        <div class="home-feature-list">
+            <article><span>01</span><div><h3>Project submissions</h3><p>Keep project details, screenshots, documentation, and team information together for review.</p></div></article>
+            <article><span>02</span><div><h3>Consistent faculty evaluation</h3><p>Assess innovation, functionality, interface, technology, and documentation and presentation across a 100-point rubric.</p></div></article>
+            <article><span>03</span><div><h3>Approved project showcase</h3><p>Browse published student work and rankings while source-code archives remain restricted to faculty.</p></div></article>
+        </div>
+    </div>
+</section>
+
+<section class="workflow-band" id="how-it-works" aria-label="Project review workflow">
+    <div class="container workflow-layout">
+        <div><span>01</span><p>Students submit a capstone and its documentation.</p></div>
+        <div><span>02</span><p>Faculty assess it against the shared rubric.</p></div>
+        <div><span>03</span><p>Approved work joins the public showcase.</p></div>
     </div>
 </section>
 
@@ -299,19 +289,15 @@ $categories = $pdo->query($catQuery)->fetchAll();
 </section>
 
 <!-- Call to Action Banner -->
-<section class="py-5" style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%); color: #fff;">
+<section class="py-5" id="contact" style="background: #e8eee9; color: #222821;">
     <div class="container text-center py-4">
-        <h2 class="display-6 fw-bold text-white mb-3">Ready to Submit Your Capstone Project?</h2>
-        <p class="lead text-light opacity-75 mb-4 mx-auto" style="max-width: 650px;">
-            Join your fellow students on ProjectSphere. Upload your documentation, screenshots, and system features for faculty review and institutional ranking.
+        <p class="home-eyebrow">Contact</p>
+        <h2 class="h2 fw-bold mb-3">Need help with portal access?</h2>
+        <p class="text-secondary mb-4 mx-auto" style="max-width: 650px;">
+            For account or project-review questions, contact your department project coordinator. Sign in to track or manage your submission.
         </p>
         <div class="d-flex justify-content-center gap-3">
-            <a href="<?= base_url('student/submit-project.php') ?>" class="btn btn-primary btn-lg px-4 shadow">
-                <i class="bi bi-cloud-arrow-up-fill me-2"></i>Submit Project Now
-            </a>
-            <a href="<?= base_url('register.php') ?>" class="btn btn-outline-light btn-lg px-4">
-                <i class="bi bi-person-plus me-2"></i>Create Student Account
-            </a>
+            <a href="<?= base_url('login.php') ?>" class="btn btn-primary btn-lg px-4">Sign in to ProjectSphere</a>
         </div>
     </div>
 </section>
