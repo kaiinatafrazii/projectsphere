@@ -137,16 +137,16 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
 <?php if (empty($hideMainNavigation)): ?>
 <nav class="navbar navbar-expand-lg navbar-projectsphere sticky-top">
     <div class="container-xl">
-        <a class="navbar-brand d-flex align-items-center gap-2" href="<?= base_url('frontend/') ?>">
+        <span class="navbar-brand d-flex align-items-center gap-2 mb-0" style="cursor: default; user-select: none;">
             <img src="<?= base_url('frontend/assets/images/logo.svg') ?>" alt="ProjectSphere Logo" style="height: 38px;">
-        </a>
+        </span>
 
         <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
         <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 d-flex flex-row flex-wrap align-items-center gap-1">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 d-flex flex-row flex-nowrap align-items-center gap-2">
                 <?php if ($isHomePage): ?>
                 <li class="nav-item">
                     <a class="nav-link active" href="#home">Home</a>
@@ -159,7 +159,7 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <?php else: ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= base_url('frontend/') ?>">
+                    <a class="nav-link <?= ($currentPage === '' || $currentPage === 'index.php') ? 'active' : '' ?>" href="<?= base_url('frontend/') ?>">
                         <i class="bi bi-house-door"></i>
                         <span>Home</span>
                     </a>
@@ -200,16 +200,6 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
                 </li>
                 <?php endif; ?>
             </ul>
-
-            <!-- Search Quick Bar -->
-            <?php if (!$isHomePage): ?>
-            <form class="d-flex align-items-center me-lg-3 my-2 my-lg-0 flex-shrink-0" action="<?= base_url('frontend/browse.php') ?>" method="GET">
-                <div class="input-group input-group-sm flex-nowrap navbar-search-box" style="width: 220px;">
-                    <input class="form-control bg-light border" type="search" name="search" placeholder="Search projects..." aria-label="Search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
-                    <button class="btn btn-outline-secondary border text-muted" type="submit" title="Search"><i class="bi bi-search"></i></button>
-                </div>
-            </form>
-            <?php endif; ?>
 
             <!-- Authentication User Actions -->
             <div class="d-flex align-items-center gap-2 flex-shrink-0">
