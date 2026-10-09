@@ -10,6 +10,11 @@ require_admin();
 
 // Manual Sync / Recalculate Trigger
 if (isset($_POST['recalculate'])) {
+    if (!validate_csrf()) {
+        $_SESSION['flash_error'] = 'Security check failed (CSRF). Please try again.';
+        header('Location: ' . base_url('frontend/admin/rankings.php'));
+        exit;
+    }
     recalculate_rankings($pdo);
     $_SESSION['flash_success'] = 'Project rankings and category standings have been recalculated successfully.';
     header('Location: ' . base_url('frontend/admin/rankings.php'));
