@@ -33,7 +33,7 @@ $pageTitle = 'My Evaluations & Faculty Feedback - ProjectSphere';
 require_once __DIR__ . '/../../backend/core/header.php';
 ?>
 
-<div class="container-fluid py-4">
+<div class="container-xl py-4">
     <div class="row">
         <!-- Sidebar Navigation -->
         <div class="col-lg-3 col-md-4 mb-4">

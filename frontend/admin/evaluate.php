@@ -187,7 +187,7 @@ $pageTitle = 'Evaluate Project: ' . htmlspecialchars($project['title']) . ' - Fa
 require_once __DIR__ . '/../../backend/core/header.php';
 ?>
 
-<div class="container-fluid py-4">
+<div class="container-xl py-4">
     <div class="row">
         <div class="col-lg-3 col-md-4 mb-4">
             <?php require_once __DIR__ . '/../../backend/core/admin-navbar.php'; ?>

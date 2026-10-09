@@ -69,15 +69,76 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
     $cssVer  = file_exists($cssFile) ? filemtime($cssFile) : time();
     ?>
     <link rel="stylesheet" href="<?= base_url('frontend/assets/css/style.css?v=' . $cssVer) ?>">
+    <!-- ProjectSphere Core Critical Layout Styles -->
+    <style>
+        .navbar-projectsphere {
+            background: #ffffff !important;
+            border-bottom: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            padding: 0.75rem 0;
+        }
+        .navbar-projectsphere .nav-link {
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 0.45rem !important;
+            white-space: nowrap !important;
+            font-weight: 500;
+            color: #475569 !important;
+            padding: 0.5rem 0.85rem !important;
+            border-radius: 8px;
+            transition: all 0.15s ease;
+        }
+        .navbar-projectsphere .nav-link:hover,
+        .navbar-projectsphere .nav-link.active {
+            color: #4f46e5 !important;
+            background-color: #eef2ff !important;
+        }
+        .navbar-projectsphere .nav-link i {
+            font-size: 1.05rem;
+            line-height: 1;
+            display: inline-block;
+        }
+        .navbar-search-box {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: stretch !important;
+        }
+        .navbar-search-box .form-control {
+            border-top-left-radius: 8px !important;
+            border-bottom-left-radius: 8px !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
+            border-right: none !important;
+        }
+        .navbar-search-box .btn {
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            border-top-right-radius: 8px !important;
+            border-bottom-right-radius: 8px !important;
+            border-left: none !important;
+            background: #f8fafc;
+        }
+        .navbar-projectsphere .btn-primary {
+            background-color: #4f46e5 !important;
+            border-color: #4f46e5 !important;
+            color: #ffffff !important;
+        }
+        .navbar-projectsphere .btn-primary:hover {
+            background-color: #4338ca !important;
+            border-color: #4338ca !important;
+        }
+    </style>
 </head>
 <body>
 
 <!-- Main Navigation Bar -->
 <?php if (empty($hideMainNavigation)): ?>
 <nav class="navbar navbar-expand-lg navbar-projectsphere sticky-top">
-    <div class="container">
-        <a class="navbar-brand" href="<?= base_url('frontend/') ?>">
-            <img src="<?= base_url('frontend/assets/images/logo.svg') ?>" alt="ProjectSphere Logo">
+    <div class="container-xl">
+        <a class="navbar-brand d-flex align-items-center gap-2" href="<?= base_url('frontend/') ?>">
+            <img src="<?= base_url('frontend/assets/images/logo.svg') ?>" alt="ProjectSphere Logo" style="height: 38px;">
         </a>
 
         <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,7 +146,7 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
         </button>
 
         <div class="collapse navbar-collapse" id="navbarMain">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3 d-flex flex-row flex-wrap align-items-center gap-1">
                 <?php if ($isHomePage): ?>
                 <li class="nav-item">
                     <a class="nav-link active" href="#home">Home</a>
@@ -98,14 +159,21 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
                 <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
                 <?php else: ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= base_url('frontend/') ?>"><i class="bi bi-house-door me-1"></i>Home</a>
+                    <a class="nav-link" href="<?= base_url('frontend/') ?>">
+                        <i class="bi bi-house-door"></i>
+                        <span>Home</span>
+                    </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?= ($currentPage === 'browse.php') ? 'active' : '' ?>" href="<?= base_url('frontend/browse.php') ?>"><i class="bi bi-compass me-1"></i>Explore Projects</a>
+                    <a class="nav-link <?= ($currentPage === 'browse.php') ? 'active' : '' ?>" href="<?= base_url('frontend/browse.php') ?>">
+                        <i class="bi bi-compass"></i>
+                        <span>Explore Projects</span>
+                    </a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
-                        <i class="bi bi-grid me-1"></i>Categories
+                        <i class="bi bi-grid"></i>
+                        <span>Categories</span>
                     </a>
                     <ul class="dropdown-menu shadow border-0 py-2">
                         <?php foreach ($navbarCategories as $nCat): ?>
@@ -126,7 +194,8 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
 
                 <li class="nav-item">
                     <a class="nav-link" href="<?= base_url('frontend/browse.php?sort=rank') ?>">
-                        <i class="bi bi-trophy me-1 text-warning"></i>Leaderboard
+                        <i class="bi bi-trophy text-warning"></i>
+                        <span>Leaderboard</span>
                     </a>
                 </li>
                 <?php endif; ?>
@@ -134,30 +203,33 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
 
             <!-- Search Quick Bar -->
             <?php if (!$isHomePage): ?>
-            <form class="d-flex align-items-center me-3" action="<?= base_url('frontend/browse.php') ?>" method="GET">
-                <div class="input-group input-group-sm flex-nowrap" style="width: 210px;">
-                    <input class="form-control" type="search" name="search" placeholder="Search projects..." aria-label="Search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
-                    <button class="btn btn-outline-secondary" type="submit" title="Search"><i class="bi bi-search"></i></button>
+            <form class="d-flex align-items-center me-lg-3 my-2 my-lg-0 flex-shrink-0" action="<?= base_url('frontend/browse.php') ?>" method="GET">
+                <div class="input-group input-group-sm flex-nowrap navbar-search-box" style="width: 220px;">
+                    <input class="form-control bg-light border" type="search" name="search" placeholder="Search projects..." aria-label="Search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+                    <button class="btn btn-outline-secondary border text-muted" type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </div>
             </form>
             <?php endif; ?>
 
             <!-- Authentication User Actions -->
-            <div class="d-flex align-items-center gap-2">
+            <div class="d-flex align-items-center gap-2 flex-shrink-0">
                 <?php if (is_admin()): ?>
-                    <a href="<?= base_url('frontend/admin/dashboard.php') ?>" class="btn btn-sm btn-outline-primary fw-semibold">
-                        <i class="bi bi-speedometer2 me-1"></i>Admin Panel
+                    <a href="<?= base_url('frontend/admin/dashboard.php') ?>" class="btn btn-sm btn-outline-primary fw-semibold d-inline-flex align-items-center gap-1.5 px-3 py-1.5 text-nowrap" style="border-radius: 8px;">
+                        <i class="bi bi-speedometer2"></i>
+                        <span>Admin Panel</span>
                     </a>
-                    <a href="<?= base_url('frontend/logout.php') ?>" class="btn btn-sm btn-light border text-danger fw-medium" title="Logout">
+                    <a href="<?= base_url('frontend/logout.php') ?>" class="btn btn-sm btn-light border text-danger fw-medium d-inline-flex align-items-center justify-content-center p-2" title="Logout" style="border-radius: 8px; width: 34px; height: 34px;">
                         <i class="bi bi-box-arrow-right"></i>
                     </a>
                 <?php elseif (is_student()): ?>
-                    <a href="<?= base_url('frontend/student/submit-project.php') ?>" class="btn btn-sm btn-primary fw-semibold">
-                        <i class="bi bi-cloud-arrow-up-fill me-1"></i>Submit Project
+                    <a href="<?= base_url('frontend/student/submit-project.php') ?>" class="btn btn-sm btn-primary fw-semibold d-inline-flex align-items-center gap-1.5 px-3 py-1.5 text-nowrap shadow-sm" style="background-color: #4f46e5 !important; border-color: #4f46e5 !important; color: #ffffff !important; border-radius: 8px;">
+                        <i class="bi bi-cloud-arrow-up-fill"></i>
+                        <span>Submit Project</span>
                     </a>
                     <div class="dropdown">
-                        <button class="btn btn-sm btn-light border dropdown-toggle fw-semibold" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle me-1 text-primary"></i><?= htmlspecialchars($_SESSION['full_name'] ?? 'Student') ?>
+                        <button class="btn btn-sm btn-light border dropdown-toggle fw-semibold d-inline-flex align-items-center gap-1.5 px-3 py-1.5 text-nowrap shadow-sm" type="button" data-bs-toggle="dropdown" style="border-radius: 8px; background: #ffffff;">
+                            <i class="bi bi-person-circle text-primary"></i>
+                            <span><?= htmlspecialchars($_SESSION['full_name'] ?? 'Student') ?></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end shadow border-0 py-2">
                             <li><h6 class="dropdown-header">Student Portal</h6></li>
@@ -170,11 +242,13 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a href="<?= base_url('frontend/login.php') ?>" class="btn btn-sm btn-outline-primary fw-semibold">
-                        <i class="bi bi-box-arrow-in-right me-1"></i>Login
+                    <a href="<?= base_url('frontend/login.php') ?>" class="btn btn-sm btn-outline-primary fw-semibold d-inline-flex align-items-center gap-1.5 px-3 py-1.5 text-nowrap" style="border-radius: 8px;">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Login</span>
                     </a>
-                    <a href="<?= base_url('frontend/register.php') ?>" class="btn btn-sm btn-primary fw-semibold">
-                        <i class="bi bi-person-plus-fill me-1"></i>Register
+                    <a href="<?= base_url('frontend/register.php') ?>" class="btn btn-sm btn-primary fw-semibold d-inline-flex align-items-center gap-1.5 px-3 py-1.5 text-nowrap" style="background-color: #4f46e5 !important; border-color: #4f46e5 !important; color: #ffffff !important; border-radius: 8px;">
+                        <i class="bi bi-person-plus-fill"></i>
+                        <span>Register</span>
                     </a>
                 <?php endif; ?>
             </div>

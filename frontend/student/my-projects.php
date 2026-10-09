@@ -12,6 +12,7 @@ $studentId = $_SESSION['profile_id'];
 
 // Handle Project Deletion (Only if status is Pending)
 if (isset($_POST['delete_project_id'])) {
+    require_csrf();
     $delId = (int)$_POST['delete_project_id'];
     $delCheck = $pdo->prepare("SELECT id, status FROM projects WHERE id = :id AND student_id = :sid");
     $delCheck->execute([':id' => $delId, ':sid' => $studentId]);
@@ -53,7 +54,7 @@ $pageTitle = 'My Projects - ProjectSphere';
 require_once __DIR__ . '/../../backend/core/header.php';
 ?>
 
-<div class="container-fluid py-4">
+<div class="container-xl py-4">
     <div class="row">
         <!-- Sidebar Navigation -->
         <div class="col-lg-3 col-md-4 mb-4">
