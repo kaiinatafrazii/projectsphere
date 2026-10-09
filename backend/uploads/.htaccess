@@ -1,0 +1,32 @@
+# ProjectSphere - Uploads Security
+# Block direct execution of any script files in uploads directory
+# This prevents PHP/script injection via file upload
+
+<IfModule mod_php.c>
+    php_flag engine off
+</IfModule>
+
+<IfModule mod_php8.c>
+    php_flag engine off
+</IfModule>
+
+# Block PHP and script execution explicitly
+<FilesMatch "\.(php|php3|php4|php5|php7|php8|phtml|pl|py|cgi|sh|bash|exe|bat)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block .htaccess overrides within uploads
+<Files .htaccess>
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+</Files>
+
+# Prevent directory listing
+Options -Indexes

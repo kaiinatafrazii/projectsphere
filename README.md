@@ -152,89 +152,89 @@ The database consists of **10 normalized tables**:
 
 ```
 projectsphere/
-├── index.php                 # Home page (Hero, Top Ranked, Featured, Categories, Stats)
-The repository root is the PHP web root for the XAMPP setup described above. Public routes stay at the root to preserve existing URLs; role-specific pages, API handlers, shared code, static assets, and uploads are grouped by purpose. There is no React/Vite build step.
-
-├── login.php                 # Unified Student & Teacher Login
-├── register.php              # Student Registration Form
-├── .htaccess                 # HTTPS redirect, sitemap/robots routes, custom 404
-├── index.php                 # Public homepage
-├── browse.php                # Approved project catalog and filters
-├── search.php                # Search compatibility route
-├── project-details.php       # Public project showcase
-├── login.php                 # Student and faculty login
-├── register.php              # Student registration
-├── logout.php                # Session logout
-├── privacy.php               # Privacy policy draft
-├── terms.php                 # Terms of service draft
-├── 404.php                   # Custom not-found page
-├── install.php               # Local database installer
-├── robots.php                # robots.txt response
-├── sitemap.php               # Dynamic XML sitemap
-├── README.md
+├── index.php                 # Root entrypoint (seamlessly routes to frontend/)
+├── .htaccess                 # Unified URL rewrite engine & security rules
+├── README.md                 # Project documentation & setup manual
 │
-├── admin/                    # Faculty dashboard and management pages
-│   ├── login.php
-│   ├── dashboard.php
-│   ├── projects.php
-│   ├── review-project.php
-│   ├── download-source.php   # Authenticated private archive download
-│   ├── evaluate.php
-│   ├── rankings.php
-│   ├── categories.php
-│   ├── students.php
-│   ├── feedback.php
-│   └── profile.php
+├── frontend/                 # 🌐 CLIENT & USER INTERFACE
+│   ├── index.php             # Public homepage & hero showcase
+│   ├── browse.php            # Search & filter approved projects catalog
+│   ├── project-details.php   # Detailed project view, rubric scores & faculty feedback
+│   ├── search.php            # Quick search redirect handler
+│   ├── login.php             # Unified Student & Evaluator Login
+│   ├── register.php          # Student registration portal
+│   ├── logout.php            # Session termination
+│   ├── privacy.php           # Privacy policy draft
+│   ├── terms.php             # Terms of service draft
+│   ├── 404.php               # Custom 404 page
+│   ├── robots.php            # Dynamic robots.txt
+│   ├── sitemap.php           # Dynamic XML sitemap generator
+│   │
+│   ├── admin/                # Faculty Admin Portal
+│   │   ├── login.php         # Dedicated admin sign-in
+│   │   ├── dashboard.php     # Statistics, analytics & quick actions
+│   │   ├── projects.php      # Project approval workflow & filters
+│   │   ├── review-project.php# Project verification screen
+│   │   ├── evaluate.php      # 100-mark rubric grading form
+│   │   ├── rankings.php      # Leaderboard management & manual recalculation
+│   │   ├── categories.php    # Category CRUD operations
+│   │   ├── students.php      # Student directory & management
+│   │   ├── feedback.php      # Communication & remarks
+│   │   ├── profile.php       # Evaluator account settings
+│   │   └── download-source.php# Secure authenticated ZIP source code download
+│   │
+│   ├── student/              # Student Workspace
+│   │   ├── dashboard.php     # Personal overview & submission counter
+│   │   ├── submit-project.php# Multi-section capstone submission form
+│   │   ├── edit-project.php  # Edit pending project draft
+│   │   ├── my-projects.php   # Student submission portfolio
+│   │   ├── my-evaluations.php# Marks breakdown & faculty notes
+│   │   └── profile.php       # Student academic profile & password reset
+│   │
+│   ├── project/              # Route compatibility
+│   │   └── details.php       # Forwarder to project-details.php
+│   │
+│   └── assets/               # Static Frontend Assets
+│       ├── css/style.css     # Design system, glassmorphism & responsive layouts
+│       ├── js/main.js        # Client validation, live previews & interactions
+│       └── images/           # SVG illustrations, logos & project sample visuals
 │
-├── api/                      # Same-origin PHP JSON endpoints
-│   ├── config.php
-│   ├── auth.php
-│   ├── projects.php
-│   ├── evaluations.php
-│   ├── rankings.php
-│   ├── categories.php
-│   ├── students.php
-│   ├── feedback.php
-│   └── stats.php
-│
-├── assets/                   # CSS, JavaScript, and public images
-│   ├── css/style.css
-│   ├── js/main.js
-│   └── images/
-│
-├── database/                 # SQL schema; direct web access denied
-│   ├── .htaccess
-│   └── projectsphere.sql
-│
-├── includes/                 # Shared PHP services and layout
-│   ├── .htaccess              # Direct web access denied
-│   ├── db.php
-│   ├── auth.php
-│   ├── functions.php
-│   ├── header.php
-│   ├── footer.php
-│   ├── admin-navbar.php
-│   └── student-navbar.php
-│
-├── student/                  # Student dashboard and submission workflows
-│   ├── dashboard.php
-│   ├── submit-project.php
-│   ├── edit-project.php
-│   ├── my-projects.php
-│   ├── my-evaluations.php
-│   └── profile.php
-│
-├── project/                  # Legacy route aliases
-│   └── details.php           # Forwards to project-details.php
-│
-└── uploads/                  # Uploaded project files
-   ├── documents/
-   ├── project-images/
-   └── private-code/         # Direct web access denied
-      └── .htaccess
+└── backend/                  # ⚙️ SERVER, DATABASE & API LOGIC
+    ├── install.php           # One-click database installation & migration wizard
+    │
+    ├── core/                 # Shared Backend Services & Layouts
+    │   ├── .htaccess         # Deny unauthorized directory browsing
+    │   ├── db.php            # PDO MySQL connection handler & error fallback
+    │   ├── auth.php          # Session security, role guards & auth helpers
+    │   ├── functions.php     # Auto-routing base_url(), upload security & ranking engine
+    │   ├── header.php        # Global HTML header with SEO tags
+    │   ├── footer.php        # Global footer & scripts
+    │   ├── admin-navbar.php  # Faculty sidebar navigation
+    │   └── student-navbar.php# Student sidebar navigation
+    │
+    ├── api/                  # REST JSON Endpoints
+    │   ├── config.php        # JSON headers, session guards & response helpers
+    │   ├── auth.php          # Login / session API
+    │   ├── projects.php      # Projects CRUD & status API
+    │   ├── evaluations.php   # Marks evaluation API
+    │   ├── rankings.php      # Leaderboard API
+    │   ├── categories.php    # Categories API
+    │   ├── students.php      # Students API
+    │   ├── feedback.php      # Remarks API
+    │   └── stats.php         # Analytics & counters API
+    │
+    ├── database/             # Database Schemas & Migrations
+    │   ├── .htaccess         # Block direct HTTP access
+    │   └── projectsphere.sql # Complete 10-table schema with realistic seed data
+    │
+    └── uploads/              # File Storage
+        ├── .htaccess         # Direct PHP execution blocked
+        ├── documents/        # Project documentation PDFs
+        ├── project-images/   # Screenshots & project thumbnails
+        └── private-code/     # Shielded private source code ZIP archives (.htaccess secured)
 ```
 
-Private source archives are downloaded through `admin/download-source.php`, which requires a faculty session. The `includes/`, `database/`, and `uploads/private-code/` directories also deny direct HTTP access.
+Private source archives are downloaded through `frontend/admin/download-source.php`, which requires a faculty session. The `backend/core/`, `backend/database/`, and `backend/uploads/private-code/` directories also deny direct HTTP access.
 
 When presenting this project to external college examiners:
 1. **Explain the Architecture:** "We followed a modular PHP architecture using PDO prepared statements to guard against SQL Injection and `password_hash()` with Bcrypt to secure credentials."
