@@ -151,6 +151,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                                                         <i class="bi bi-pencil me-1"></i>Edit Submission
                                                     </a>
                                                     <form method="POST" action="<?= base_url('frontend/student/my-projects.php') ?>" onsubmit="return confirm('Are you sure you want to delete this pending project draft?');">
+                                                        <?= csrf_field() ?>
                                                         <input type="hidden" name="delete_project_id" value="<?= $p['id'] ?>">
                                                         <button type="submit" class="btn btn-outline-danger btn-sm w-100">
                                                             <i class="bi bi-trash me-1"></i>Delete Draft

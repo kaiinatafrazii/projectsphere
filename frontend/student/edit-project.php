@@ -173,7 +173,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                             <label class="form-label">Category</label>
                             <select name="category_id" class="form-select" required>
                                 <?php foreach ($categories as $cat): ?>
-                                    <option value="<?= $cat['id'] ?>" <?= (($formData['category_id'] ?? $project['category_id']) == $cat['id']) ? 'selected' : '' ?>>
+                                    <option value="<?= $cat['id'] ?>" <?= (($_POST['category_id'] ?? $project['category_id']) == $cat['id']) ? 'selected' : '' ?>>
                                         <?= htmlspecialchars($cat['name']) ?>
                                     </option>
                                 <?php endforeach; ?>
