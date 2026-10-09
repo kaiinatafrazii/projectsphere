@@ -16,8 +16,10 @@ if (session_status() === PHP_SESSION_NONE) {
             'httponly' => true,
             'samesite' => 'Lax'
         ]);
+        session_start();
+    } elseif (php_sapi_name() === 'cli') {
+        @session_start();
     }
-    session_start();
 }
 
 /**
@@ -34,6 +36,13 @@ function csrf_token(): string {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
     return $_SESSION['csrf_token'];
+}
+
+/**
+ * Generate / retrieve CSRF token alias
+ */
+function generate_csrf(): string {
+    return csrf_token();
 }
 
 /**

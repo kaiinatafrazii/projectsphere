@@ -206,17 +206,26 @@ require_once __DIR__ . '/../../backend/core/header.php';
 
                                 <div class="mb-3">
                                     <label class="form-label">Current Password</label>
-                                    <input type="password" name="current_password" class="form-control" required>
+                                    <div class="input-group">
+                                        <input type="password" name="current_password" id="currPass" class="form-control" required>
+                                        <button class="btn btn-outline-secondary password-toggle-btn" type="button" data-target="currPass" aria-label="Toggle visibility"><i class="bi bi-eye"></i></button>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">New Password</label>
-                                    <input type="password" name="new_password" class="form-control" placeholder="Min 6 characters" required>
+                                    <div class="input-group">
+                                        <input type="password" name="new_password" id="newPass" class="form-control" placeholder="Min 6 characters" required minlength="6">
+                                        <button class="btn btn-outline-secondary password-toggle-btn" type="button" data-target="newPass" aria-label="Toggle visibility"><i class="bi bi-eye"></i></button>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label">Confirm New Password</label>
-                                    <input type="password" name="confirm_password" class="form-control" required>
+                                    <div class="input-group">
+                                        <input type="password" name="confirm_password" id="confPass" class="form-control" required minlength="6">
+                                        <button class="btn btn-outline-secondary password-toggle-btn" type="button" data-target="confPass" aria-label="Toggle visibility"><i class="bi bi-eye"></i></button>
+                                    </div>
                                 </div>
 
                                 <button type="submit" class="btn btn-outline-dark w-100">

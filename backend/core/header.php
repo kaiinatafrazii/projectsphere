@@ -134,10 +134,10 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
 
             <!-- Search Quick Bar -->
             <?php if (!$isHomePage): ?>
-            <form class="d-flex me-3" action="<?= base_url('frontend/browse.php') ?>" method="GET">
-                <div class="input-group input-group-sm">
-                    <input class="form-control" type="search" name="search" placeholder="Search projects..." aria-label="Search" style="width: 180px;">
-                    <button class="btn btn-outline-secondary" type="submit"><i class="bi bi-search"></i></button>
+            <form class="d-flex align-items-center me-3" action="<?= base_url('frontend/browse.php') ?>" method="GET">
+                <div class="input-group input-group-sm flex-nowrap" style="width: 210px;">
+                    <input class="form-control" type="search" name="search" placeholder="Search projects..." aria-label="Search" value="<?= htmlspecialchars($_GET['search'] ?? '') ?>">
+                    <button class="btn btn-outline-secondary" type="submit" title="Search"><i class="bi bi-search"></i></button>
                 </div>
             </form>
             <?php endif; ?>
