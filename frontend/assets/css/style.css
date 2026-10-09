@@ -1084,3 +1084,160 @@ h6 {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ==========================================================================
+   MOBILE OVERFLOW PREVENTION & TABLE CONTAINMENT
+   ========================================================================== */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.table-responsive {
+  -webkit-overflow-scrolling: touch;
+}
+
+.container-fluid,
+.container {
+  max-width: 100%;
+}
+
+/* ==========================================================================
+   EMPTY STATE COMPONENT
+   ========================================================================== */
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  min-height: 280px;
+}
+
+.empty-state-icon {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--ps-primary-light);
+  color: var(--ps-primary);
+  font-size: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+.empty-state h3 {
+  font-family: var(--ps-font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ps-dark);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+  max-width: 400px;
+  color: var(--ps-muted);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.empty-state .btn {
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   MOBILE NAV & RESPONSIVE POLISH
+   ========================================================================== */
+
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    padding: 1rem 0;
+  }
+
+  .navbar-collapse .nav-link {
+    padding: 0.65rem 0.9rem !important;
+  }
+
+  .navbar-collapse .d-flex {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .navbar-collapse .d-flex .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar-collapse .d-flex .dropdown {
+    width: 100%;
+  }
+
+  .navbar-collapse .d-flex .dropdown .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  .navbar-collapse form.d-flex {
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .navbar-collapse form.d-flex .form-control {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .container-fluid {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .card {
+    border-radius: 10px !important;
+  }
+
+  .content-card {
+    padding: 1rem;
+  }
+
+  h1, .h1 { font-size: 1.75rem; }
+  h2, .h2 { font-size: 1.5rem; }
+  h3, .h3 { font-size: 1.25rem; }
+
+  .project-card-img-wrapper {
+    height: 160px;
+  }
+
+  .dashboard-sidebar {
+    padding: 1rem 0.75rem;
+  }
+
+  .sidebar-link {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .footer-projectsphere {
+    padding: 2rem 0 1rem;
+  }
+
+  .footer-projectsphere .row > div {
+    text-align: center;
+  }
+
+  .table th,
+  .table td {
+    white-space: nowrap;
+    font-size: 0.8rem;
+    padding: 0.6rem 0.5rem;
+  }
+}
+

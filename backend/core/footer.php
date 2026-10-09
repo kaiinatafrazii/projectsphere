@@ -3,13 +3,13 @@
 <aside class="cookie-notice" id="cookieNotice" aria-label="Cookie information" hidden>
     <div>
         <strong>Essential cookies</strong>
-        <p>ProjectSphere uses session cookies for sign-in and portal requests. No analytics or advertising cookies are configured. <a href="<?= base_url('frontend/privacy.php') ?>">Privacy policy draft</a></p>
+        <p>ProjectSphere uses session cookies for sign-in and portal requests. No analytics or advertising cookies are configured. <a href="<?= base_url('frontend/privacy.php') ?>">Privacy policy</a></p>
     </div>
     <button class="btn btn-primary btn-sm" type="button" id="dismissCookieNotice">Got it</button>
 </aside>
 
 <?php if ($isHomePage): ?>
-<!-- Footer -->
+<!-- Full Footer (Home Page) -->
 <footer class="footer-projectsphere">
     <div class="container">
         <div class="row g-4">
@@ -52,12 +52,15 @@
                     <strong>Academic Year:</strong> 2026-2027<br>
                     <strong>Evaluation Criteria:</strong> 100 Marks System (Innovation, Functionality, UI/UX, Tech Stack &amp; Docs)
                 </p>
+                <div class="text-secondary small mt-2">
+                    <i class="bi bi-envelope me-1"></i><a href="mailto:support@projectsphere.edu">support@projectsphere.edu</a>
+                </div>
                 <div class="text-secondary small mt-3">
                     <i class="bi bi-check2-circle text-success me-1"></i>PHP 8.2 &bull; MySQL &bull; Bootstrap 5
                 </div>
                 <div class="small mt-3">
-                    <a class="d-block mb-2" href="<?= base_url('frontend/privacy.php') ?>">Privacy policy draft</a>
-                    <a class="d-block" href="<?= base_url('frontend/terms.php') ?>">Terms of service draft</a>
+                    <a class="d-block mb-2" href="<?= base_url('frontend/privacy.php') ?>">Privacy Policy</a>
+                    <a class="d-block" href="<?= base_url('frontend/terms.php') ?>">Terms of Service</a>
                 </div>
             </div>
         </div>
@@ -70,6 +73,22 @@
             </div>
             <div class="col-md-6 text-center text-md-end text-secondary mt-2 mt-md-0">
                 Diploma Computer Science Final Year Project
+            </div>
+        </div>
+    </div>
+</footer>
+<?php else: ?>
+<!-- Compact Footer (All Other Pages) -->
+<footer class="footer-projectsphere py-3">
+    <div class="container">
+        <div class="row align-items-center small">
+            <div class="col-md-6 text-center text-md-start text-secondary">
+                &copy; <?= date('Y') ?> <strong>ProjectSphere</strong> &bull; Student Project Showcase &amp; Evaluation Portal
+            </div>
+            <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                <a href="<?= base_url('frontend/privacy.php') ?>" class="text-secondary me-3">Privacy Policy</a>
+                <a href="<?= base_url('frontend/terms.php') ?>" class="text-secondary me-3">Terms of Service</a>
+                <a href="mailto:support@projectsphere.edu" class="text-secondary">Contact</a>
             </div>
         </div>
     </div>

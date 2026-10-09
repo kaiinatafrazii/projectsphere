@@ -27,6 +27,9 @@ $formData = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf()) {
+        $errors[] = 'Security check failed (CSRF token mismatch). Please refresh and try again.';
+    }
     $formData['title']             = trim($_POST['title'] ?? '');
     $formData['category_id']       = (int)($_POST['category_id'] ?? 0);
     $formData['short_description'] = trim($_POST['short_description'] ?? '');
@@ -232,6 +235,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                 <?php endif; ?>
 
                 <form method="POST" action="<?= base_url('frontend/student/submit-project.php') ?>" enctype="multipart/form-data">
+                    <?= csrf_field() ?>
                     <!-- Section 1: Basic Info -->
                     <h5 class="fw-bold text-dark mt-2 mb-3"><i class="bi bi-info-circle me-2 text-primary"></i>1. Basic Project Information</h5>
                     <div class="row g-3 mb-4">

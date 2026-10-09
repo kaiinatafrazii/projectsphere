@@ -154,7 +154,7 @@ function recalculate_rankings(PDO $pdo): void {
 }
 
 /**
- * Handle secure file uploads
+ * Handle secure file uploads with strict MIME inspection and automated image compression
  */
 function handle_file_upload(
     array $file, 
@@ -174,18 +174,81 @@ function handle_file_upload(
         return ['success' => false, 'error' => "File size exceeds limit of {$maxSizeMb}MB.", 'filename' => null];
     }
 
+    // 1. Strict extension validation
     $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-    if (!in_array($ext, $allowedExtensions)) {
+    $dangerousExtensions = ['php', 'phtml', 'php3', 'php4', 'php5', 'php7', 'php8', 'phar', 'inc', 'exe', 'sh', 'bat', 'cmd', 'js', 'html', 'htm', 'shtml', 'cgi', 'pl', 'py'];
+    if (in_array($ext, $dangerousExtensions, true)) {
+        return ['success' => false, 'error' => 'Executable and script file uploads are strictly forbidden for security.', 'filename' => null];
+    }
+
+    if (!in_array($ext, $allowedExtensions, true)) {
         return ['success' => false, 'error' => "Invalid file format (.{$ext}). Allowed: " . implode(', ', $allowedExtensions), 'filename' => null];
     }
 
-    if (!is_dir($targetDir)) {
-        mkdir($targetDir, 0777, true);
+    // 2. MIME type verification via finfo magic bytes
+    if (function_exists('finfo_open')) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+
+        $allowedMimes = [
+            'jpg'  => ['image/jpeg'],
+            'jpeg' => ['image/jpeg'],
+            'png'  => ['image/png'],
+            'webp' => ['image/webp'],
+            'svg'  => ['image/svg+xml', 'text/plain', 'text/xml'],
+            'pdf'  => ['application/pdf'],
+            'doc'  => ['application/msword'],
+            'docx' => ['application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
+            'zip'  => ['application/zip', 'application/x-zip-compressed', 'application/octet-stream'],
+            'rar'  => ['application/x-rar-compressed', 'application/octet-stream'],
+            '7z'   => ['application/x-7z-compressed', 'application/octet-stream']
+        ];
+
+        if (isset($allowedMimes[$ext]) && !in_array($mime, $allowedMimes[$ext], true)) {
+            return ['success' => false, 'error' => "Security check failed: File content does not match extension .{$ext} (detected MIME: {$mime}).", 'filename' => null];
+        }
     }
 
-    $uniqueName = uniqid('file_', true) . '.' . $ext;
+    if (!is_dir($targetDir)) {
+        mkdir($targetDir, 0755, true);
+    }
+
+    $uniqueName = bin2hex(random_bytes(16)) . '.' . $ext;
     $targetPath = rtrim($targetDir, '/') . '/' . $uniqueName;
 
+    // 3. Automated Image Compression & Metadata Stripping (for raster images)
+    if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'], true) && extension_loaded('gd')) {
+        $img = null;
+        if ($ext === 'jpg' || $ext === 'jpeg') {
+            $img = @imagecreatefromjpeg($file['tmp_name']);
+        } elseif ($ext === 'png') {
+            $img = @imagecreatefrompng($file['tmp_name']);
+        } elseif ($ext === 'webp') {
+            $img = @imagecreatefromwebp($file['tmp_name']);
+        }
+
+        if ($img !== false && $img !== null) {
+            // Compress and save
+            $saved = false;
+            if ($ext === 'jpg' || $ext === 'jpeg') {
+                $saved = imagejpeg($img, $targetPath, 85);
+            } elseif ($ext === 'png') {
+                imagealphablending($img, false);
+                imagesavealpha($img, true);
+                $saved = imagepng($img, $targetPath, 8);
+            } elseif ($ext === 'webp') {
+                $saved = imagewebp($img, $targetPath, 85);
+            }
+            imagedestroy($img);
+
+            if ($saved) {
+                return ['success' => true, 'filename' => $uniqueName, 'filepath' => $targetPath];
+            }
+        }
+    }
+
+    // Default save for documents or if GD not applicable
     if (!move_uploaded_file($file['tmp_name'], $targetPath)) {
         return ['success' => false, 'error' => 'Failed to save uploaded file to disk.', 'filename' => null];
     }

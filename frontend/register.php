@@ -27,6 +27,9 @@ $formData = [
 ];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf()) {
+        $errors[] = 'Security check failed (CSRF token mismatch). Please refresh and try again.';
+    }
     $formData['full_name']  = trim($_POST['full_name'] ?? '');
     $formData['roll_no']    = strtoupper(trim($_POST['roll_no'] ?? ''));
     $formData['email']      = strtolower(trim($_POST['email'] ?? ''));
@@ -171,6 +174,7 @@ require_once __DIR__ . '/../backend/core/header.php';
                 <?php endif; ?>
 
                 <form method="POST" action="">
+                    <?= csrf_field() ?>
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label">Full Name <span class="text-danger">*</span></label>

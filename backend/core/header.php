@@ -7,6 +7,14 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/auth.php';
 require_once __DIR__ . '/functions.php';
 
+// Security Headers
+if (!headers_sent()) {
+    header('X-Frame-Options: SAMEORIGIN');
+    header('X-Content-Type-Options: nosniff');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
+}
+
 // Fetch categories for navbar dropdown
 try {
     $catNavStmt = $pdo->query("SELECT id, name, slug FROM project_categories ORDER BY name ASC LIMIT 8");

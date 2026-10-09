@@ -12,6 +12,11 @@ $adminId = $_SESSION['profile_id'];
 
 // Handle new feedback post
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'post_feedback') {
+    if (!validate_csrf()) {
+        $_SESSION['flash_error'] = 'Security check failed (CSRF). Please refresh and try again.';
+        header('Location: ' . base_url('frontend/admin/feedback.php'));
+        exit;
+    }
     $projId = (int)($_POST['project_id'] ?? 0);
     $comment = trim($_POST['comment'] ?? '');
 
@@ -151,6 +156,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="<?= base_url('frontend/admin/feedback.php') ?>">
+                <?= csrf_field() ?>
                 <input type="hidden" name="action" value="post_feedback">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold">Post Faculty Remark</h5>

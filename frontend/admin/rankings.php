@@ -68,6 +68,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
 
                     <div class="d-flex gap-2 mt-2 mt-md-0">
                         <form method="POST" action="<?= base_url('frontend/admin/rankings.php') ?>">
+                            <?= csrf_field() ?>
                             <input type="hidden" name="recalculate" value="1">
                             <button type="submit" class="btn btn-outline-primary btn-sm">
                                 <i class="bi bi-arrow-repeat me-1"></i>Sync & Recalculate

@@ -22,8 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $emailOrUsername = trim($_POST['username_or_email'] ?? '');
     $password = $_POST['password'] ?? '';
     $role = $_POST['role'] ?? 'student';
+    $rateLimitKey = 'login_' . ($_SERVER['REMOTE_ADDR'] ?? 'local');
 
-    if (empty($emailOrUsername) || empty($password)) {
+    if (!validate_csrf()) {
+        $error = 'Security check failed (CSRF token mismatch). Please refresh and try again.';
+    } elseif (is_rate_limited($rateLimitKey, 5, 300)) {
+        $error = 'Too many failed login attempts. Please wait 5 minutes before trying again.';
+    } elseif (empty($emailOrUsername) || empty($password)) {
         $error = 'Please enter both your username/email and password.';
     } else {
         // Query user by email or username (case-insensitive & trimmed)
@@ -44,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
+            clear_rate_limit($rateLimitKey);
             if ($user['status'] !== 'active') {
                 $error = 'Your account has been deactivated. Please contact the department administrator.';
             } else {
@@ -93,12 +99,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
         } else {
+            record_rate_limit_attempt($rateLimitKey);
             $error = 'Invalid email/username or password. Please verify and try again.';
         }
     }
 }
 
-$pageTitle = 'Login - ProjectSphere Portal';
+$pageTitle = 'Sign In - ProjectSphere Academic Portal';
+$pageDescription = 'Sign in to ProjectSphere with your student enrollment credentials or departmental faculty account.';
 $hideMainNavigation = true;
 require_once __DIR__ . '/../backend/core/header.php';
 ?>
@@ -136,6 +144,7 @@ require_once __DIR__ . '/../backend/core/header.php';
                 <?php endif; ?>
 
                 <form method="POST" action="">
+                    <?= csrf_field() ?>
                     <input type="hidden" name="role" id="roleInput" value="<?= htmlspecialchars($selectedRole) ?>">
 
                     <div class="mb-3">
@@ -173,20 +182,6 @@ require_once __DIR__ . '/../backend/core/header.php';
                 <div class="mt-4 pt-3 border-top text-center small text-secondary">
                     <span id="registerPrompt">Don't have a student account?</span>
                     <a href="<?= base_url('frontend/register.php') ?>" class="text-primary fw-semibold ms-1" id="registerLink">Register here</a>
-                </div>
-
-                <!-- Demo Credentials Helper Callout -->
-                <div class="mt-4 p-3 bg-light rounded-3 small border">
-                    <div class="fw-bold mb-1 text-dark"><i class="bi bi-info-circle me-1 text-primary"></i>Demo Credentials:</div>
-                    <div class="text-muted">
-                        <strong>Student:</strong> <code>rahul@college.edu</code> | Pass: <code>student123</code><br>
-                        <strong>Teacher/Admin:</strong> <code>admin@projectsphere.edu</code> | Pass: <code>admin123</code>
-                    </div>
-                    <div class="mt-2 pt-2 border-top text-center">
-                        <a href="<?= base_url('install.php') ?>" class="text-secondary text-decoration-none">
-                            <i class="bi bi-gear-fill me-1 text-primary"></i>Database Setup & Installer (install.php) &rarr;
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

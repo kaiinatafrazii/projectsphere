@@ -26,6 +26,9 @@ $stmt->execute([':id' => $studentId]);
 $student = $stmt->fetch();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf()) {
+        $errors[] = 'Security check failed (CSRF token mismatch). Please refresh and try again.';
+    }
     $action = $_POST['action'] ?? 'update_profile';
 
     if ($action === 'update_profile') {
@@ -131,6 +134,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                     <!-- Profile Update Form -->
                     <div class="col-lg-7">
                         <form method="POST" action="<?= base_url('frontend/student/profile.php') ?>">
+                            <?= csrf_field() ?>
                             <input type="hidden" name="action" value="update_profile">
 
                             <h5 class="fw-bold text-dark mb-3">Academic & Personal Details</h5>
@@ -197,6 +201,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                         <div class="p-4 bg-light rounded-3 border">
                             <h5 class="fw-bold text-dark mb-3"><i class="bi bi-shield-lock me-2 text-primary"></i>Change Password</h5>
                             <form method="POST" action="<?= base_url('frontend/student/profile.php') ?>">
+                                <?= csrf_field() ?>
                                 <input type="hidden" name="action" value="change_password">
 
                                 <div class="mb-3">

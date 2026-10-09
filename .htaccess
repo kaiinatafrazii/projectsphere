@@ -1,6 +1,31 @@
 RewriteEngine On
 RewriteBase /projectsphere/
 
+# Enforce HTTPS on production (non-localhost) domains
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1|\[::1\])(:[0-9]+)?$ [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# Prevent access to hidden files, git, backups, and configs
+<FilesMatch "(\.(git|env|sql|bak|config|lock|log|sh)|composer\.json|package\.json)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# HTTP Security Headers
+<IfModule mod_headers.c>
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
 # If accessing root directory directly, rewrite to frontend
 RewriteRule ^$ frontend/ [L]
 

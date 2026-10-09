@@ -49,6 +49,9 @@ $existingEval = $evalStmt->fetch();
 $errors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf()) {
+        $errors[] = 'Security check failed (CSRF token mismatch). Please refresh and try again.';
+    }
     $innovation    = (float)($_POST['innovation_score'] ?? 0);
     $functionality = (float)($_POST['functionality_score'] ?? 0);
     $uiDesign      = (float)($_POST['ui_design_score'] ?? 0);
@@ -224,6 +227,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                     <!-- Evaluation Form -->
                     <div class="col-lg-7">
                         <form method="POST" id="evaluationForm" action="<?= base_url('frontend/admin/evaluate.php?id=' . $projectId) ?>">
+                            <?= csrf_field() ?>
                             <h5 class="fw-bold text-dark mb-3"><i class="bi bi-sliders me-2 text-primary"></i>Evaluation Marks Input</h5>
                             
                             <!-- Metric 1: Innovation (20) -->

@@ -13,6 +13,11 @@ $success = '';
 
 // Handle Category CRUD Actions
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf()) {
+        $_SESSION['flash_error'] = 'Security check failed (CSRF token mismatch). Please refresh and try again.';
+        header('Location: ' . base_url('frontend/admin/categories.php'));
+        exit;
+    }
     $action = $_POST['action'] ?? '';
 
     if ($action === 'add') {
@@ -146,6 +151,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                                         </button>
                                         <?php if ($cat['project_count'] == 0): ?>
                                             <form method="POST" action="<?= base_url('frontend/admin/categories.php') ?>" class="d-inline" onsubmit="return confirm('Delete this category?');">
+                                                <?= csrf_field() ?>
                                                 <input type="hidden" name="action" value="delete">
                                                 <input type="hidden" name="category_id" value="<?= $cat['id'] ?>">
                                                 <button type="submit" class="btn btn-sm btn-outline-danger">
@@ -165,6 +171,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <form method="POST" action="<?= base_url('frontend/admin/categories.php') ?>">
+                                                <?= csrf_field() ?>
                                                 <input type="hidden" name="action" value="edit">
                                                 <input type="hidden" name="category_id" value="<?= $cat['id'] ?>">
                                                 <div class="modal-header">
@@ -208,6 +215,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="<?= base_url('frontend/admin/categories.php') ?>">
+                <?= csrf_field() ?>
                 <input type="hidden" name="action" value="add">
                 <div class="modal-header">
                     <h5 class="modal-title fw-bold">Add New Category</h5>

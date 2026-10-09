@@ -18,6 +18,11 @@ if ($projectId <= 0) {
 
 // Handle Status Updates
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+    if (!validate_csrf()) {
+        $_SESSION['flash_error'] = 'Security check failed (CSRF). Please refresh and try again.';
+        header('Location: ' . base_url('frontend/admin/review-project.php?id=' . $projectId));
+        exit;
+    }
     $action = $_POST['action'];
     if ($action === 'update_status') {
         $newStatus = $_POST['status'] ?? 'pending';
@@ -117,6 +122,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                 <!-- Status Update Bar -->
                 <div class="p-3 bg-light rounded-3 border">
                     <form method="POST" action="<?= base_url('frontend/admin/review-project.php?id=' . $projectId) ?>" class="row g-2 align-items-center">
+                        <?= csrf_field() ?>
                         <input type="hidden" name="action" value="update_status">
                         <div class="col-auto">
                             <label class="col-form-label fw-bold small">Change Status:</label>

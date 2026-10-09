@@ -1,30 +1,54 @@
 <?php
-$pageTitle = 'Privacy Policy Draft - ProjectSphere';
-$pageDescription = 'Draft privacy information for ProjectSphere student accounts, submissions, evaluations, and session cookies.';
+/**
+ * ProjectSphere - Privacy Policy
+ */
+$pageTitle = 'Privacy Policy - ProjectSphere';
+$pageDescription = 'Privacy policy for ProjectSphere student accounts, project submissions, evaluations, and session cookies.';
 require_once __DIR__ . '/../backend/core/header.php';
 ?>
 <article class="container legal-page">
     <p class="text-uppercase small fw-bold text-primary">ProjectSphere / Privacy</p>
-    <h1>Privacy policy</h1>
-    <p>This draft describes the information the current portal handles. It is not a final institutional privacy notice.</p>
-    <div class="legal-draft"><strong>Draft for institutional review</strong><p>Confirm the institution owner, contact details, retention periods, and applicable requirements before publishing this page.</p></div>
+    <h1>Privacy Policy</h1>
+    <p>This policy explains how ProjectSphere collects, uses, and protects your information when you use our academic project showcase and evaluation portal.</p>
 
     <section>
-        <h2>Information in the portal</h2>
-        <p>Student accounts may include a name, email address, roll number, department, semester, and optional phone number. Project submissions can include descriptions, team details, screenshots, documentation, demo links, and a private source-code archive. Faculty accounts create evaluations and feedback.</p>
+        <h2>1. Information We Collect</h2>
+        <p><strong>Account Information:</strong> When you register, we collect your full name, email address, college roll number, department, semester, and an optional phone number. Faculty accounts include a name and institutional email.</p>
+        <p><strong>Project Submissions:</strong> Students submit project titles, descriptions, team member details, screenshots, documentation files, demo links, and optional private source-code archives for faculty evaluation.</p>
+        <p><strong>Evaluation Data:</strong> Faculty evaluators award marks using a 100-point rubric (Innovation, Functionality, UI/UX, Technology, Documentation) and provide written feedback. Published evaluations and rankings may be visible to all users.</p>
     </section>
+
     <section>
-        <h2>How it is used</h2>
-        <p>The application uses account and submission information to provide sign-in, project review, feedback, approved project showcases, and published rankings. Approved project information and selected evaluation details may be visible to visitors. Source-code archives are intended for authorized faculty review and are not part of the public showcase.</p>
+        <h2>2. How We Use Your Information</h2>
+        <p>Your information is used to provide sign-in authentication, project review workflows, faculty evaluation, approved project showcases, and published ranking leaderboards. Approved project details (title, summary, screenshots, team, and scores) are publicly visible. Private source-code archives are accessible <strong>only</strong> to authorized faculty evaluators.</p>
     </section>
+
     <section>
-        <h2>Storage and cookies</h2>
-        <p>The PHP application uses a session cookie for signed-in requests. The browser stores a local preference to remember dismissal of the cookie notice. No analytics or advertising service is configured in this application.</p>
+        <h2>3. Data Storage &amp; Security</h2>
+        <p>All data is stored on the institution's MySQL database hosted locally. Passwords are hashed using PHP's <code>password_hash()</code> with the <code>PASSWORD_DEFAULT</code> algorithm. Session cookies are configured with <code>HttpOnly</code>, <code>SameSite=Lax</code>, and the <code>Secure</code> flag on HTTPS connections. CSRF tokens protect all form submissions.</p>
     </section>
+
     <section>
-        <h2>Retention and contact</h2>
-        <p>The repository does not specify retention periods, a data-request process, or an institutional privacy contact. The institution operating this portal must supply and approve those details before publication. Do not treat this draft as a promise about deletion or retention.</p>
+        <h2>4. Cookies</h2>
+        <p>ProjectSphere uses a single session cookie (<code>PHPSESSID</code>) for authenticated requests. A local-storage key remembers your cookie notice dismissal. No analytics, advertising, or third-party tracking cookies are used.</p>
     </section>
-    <p><a href="<?= base_url('terms.php') ?>">Read the terms of service draft</a></p>
+
+    <section>
+        <h2>5. Data Retention &amp; Deletion</h2>
+        <p>Account data and project submissions are retained for the duration of the academic programme. Students may request account deletion by contacting the department administrator at <a href="mailto:support@projectsphere.edu">support@projectsphere.edu</a>. Upon graduation or programme completion, the institution may archive or remove data as per its records retention policy.</p>
+    </section>
+
+    <section>
+        <h2>6. Third-Party Services</h2>
+        <p>This portal loads Bootstrap CSS/JS and Bootstrap Icons from the jsDelivr CDN. No other third-party analytics, advertising, or tracking services are integrated.</p>
+    </section>
+
+    <section>
+        <h2>7. Contact</h2>
+        <p>For questions about this privacy policy or to exercise your data rights, contact the Department of Computer Engineering at <a href="mailto:support@projectsphere.edu">support@projectsphere.edu</a>.</p>
+    </section>
+
+    <p class="text-muted small mt-4"><em>Last updated: <?= date('F Y') ?></em></p>
+    <p><a href="<?= base_url('frontend/terms.php') ?>">Read the Terms of Service &rarr;</a></p>
 </article>
 <?php require_once __DIR__ . '/../backend/core/footer.php'; ?>

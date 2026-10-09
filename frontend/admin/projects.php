@@ -10,6 +10,11 @@ require_admin();
 
 // Handle Status Changes (Approve / Reject) or Delete
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf()) {
+        $_SESSION['flash_error'] = 'Security check failed (CSRF). Please refresh and try again.';
+        header('Location: ' . base_url('frontend/admin/projects.php'));
+        exit;
+    }
     $action = $_POST['action'] ?? '';
     $projId = (int)($_POST['project_id'] ?? 0);
 
@@ -205,6 +210,7 @@ require_once __DIR__ . '/../../backend/core/header.php';
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
                                                     <form method="POST" action="<?= base_url('frontend/admin/projects.php') ?>">
+                                                        <?= csrf_field() ?>
                                                         <input type="hidden" name="action" value="delete">
                                                         <input type="hidden" name="project_id" value="<?= $p['id'] ?>">
                                                         <button type="submit" class="btn btn-danger btn-sm">Confirm Delete</button>
