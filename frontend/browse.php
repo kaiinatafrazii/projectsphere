@@ -73,7 +73,7 @@ $allCategories = $pdo->query("SELECT id, name FROM project_categories ORDER BY n
 $popularTechs = ['PHP', 'MySQL', 'Python', 'Android', 'Java', 'IoT', 'Bootstrap', 'JavaScript'];
 ?>
 
-<div class="container py-4">
+<div class="container-xl py-4">
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb small">
