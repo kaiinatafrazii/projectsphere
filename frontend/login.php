@@ -111,99 +111,104 @@ $hideMainNavigation = true;
 require_once __DIR__ . '/../backend/core/header.php';
 ?>
 
-<div class="auth-page-wrapper">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-7 col-lg-5 col-xl-4">
-                <a class="auth-home-link" href="<?= base_url() ?>">
-                    <i class="bi bi-arrow-left"></i> Back to Catalog
-                </a>
+<div class="auth-page-wrapper glass-auth-wrapper">
+    <!-- Ambient Floating Orbs for Glass Refraction -->
+    <div class="glass-bg-orb glass-orb-1" aria-hidden="true"></div>
+    <div class="glass-bg-orb glass-orb-2" aria-hidden="true"></div>
+    <div class="glass-bg-orb glass-orb-3" aria-hidden="true"></div>
 
-                <div class="card auth-card p-4 p-sm-5">
-                    <div class="text-center mb-4">
-                        <a href="<?= base_url() ?>" class="d-inline-block mb-3">
-                            <img src="<?= base_url('frontend/assets/images/logo.svg') ?>" alt="ProjectSphere Logo" style="height: 40px;">
-                        </a>
-                        <span class="auth-header-badge bg-primary-subtle text-primary" id="roleBadge">
+    <div class="container d-flex flex-column align-items-center">
+        <div class="auth-container-glass">
+            <a class="auth-home-link glass-back-link" href="<?= base_url() ?>">
+                <i class="bi bi-arrow-left"></i> <span>Back to Catalog</span>
+            </a>
+
+            <div class="card auth-card glass-auth-card">
+                <div class="text-center mb-4">
+                    <a href="<?= base_url() ?>" class="d-inline-block mb-3">
+                        <img src="<?= base_url('frontend/assets/images/logo.svg') ?>" alt="ProjectSphere Logo" style="height: 42px;">
+                    </a>
+                    <div>
+                        <span class="auth-header-badge glass-header-badge" id="roleBadge">
                             <i class="bi bi-person-fill"></i> Student Portal
                         </span>
-                        <h2 class="h4 fw-bold text-dark mb-1">Welcome Back</h2>
-                        <p class="text-secondary small mb-0">Sign in to track evaluations and showcase your capstone</p>
+                    </div>
+                    <h2 class="h4 fw-bold text-dark mb-1">Welcome Back</h2>
+                    <p class="text-secondary small mb-0">Sign in to track evaluations and showcase your capstone</p>
+                </div>
+
+                <!-- Role Switcher Tabs -->
+                <div class="auth-role-tabs glass-role-tabs" role="tablist">
+                    <button class="nav-link <?= ($selectedRole === 'student') ? 'active' : '' ?>" id="studentTabBtn" type="button" role="tab" onclick="setRole('student')">
+                        <i class="bi bi-mortarboard-fill"></i> Student
+                    </button>
+                    <button class="nav-link <?= ($selectedRole === 'admin') ? 'active' : '' ?>" id="adminTabBtn" type="button" role="tab" onclick="setRole('admin')">
+                        <i class="bi bi-shield-lock-fill"></i> Faculty / Admin
+                    </button>
+                </div>
+
+                <?php if (!empty($error)): ?>
+                    <div class="alert alert-danger alert-dismissible fade show small d-flex align-items-center shadow-sm" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2 fs-6 flex-shrink-0"></i>
+                        <div><?= htmlspecialchars($error) ?></div>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+
+                <form method="POST" action="" id="loginForm" novalidate>
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="role" id="roleInput" value="<?= htmlspecialchars($selectedRole) ?>">
+
+                    <div class="mb-3">
+                        <label for="username_or_email" class="form-label fw-semibold text-secondary small" id="usernameLabel">
+                            <?= ($selectedRole === 'admin') ? 'Faculty Email or Username' : 'Student Email or Username' ?>
+                        </label>
+                        <div class="input-group auth-input-group glass-input-group">
+                            <span class="input-group-text"><i class="bi bi-person" id="usernameIcon"></i></span>
+                            <input type="text" class="form-control" id="username_or_email" name="username_or_email" 
+                                   placeholder="<?= ($selectedRole === 'admin') ? 'admin@projectsphere.edu' : 'rahul@college.edu or rahul_sharma' ?>" 
+                                   value="<?= htmlspecialchars($_POST['username_or_email'] ?? '') ?>" required autofocus>
+                        </div>
                     </div>
 
-                    <!-- Role Switcher Tabs -->
-                    <div class="auth-role-tabs" role="tablist">
-                        <button class="nav-link <?= ($selectedRole === 'student') ? 'active' : '' ?>" id="studentTabBtn" type="button" role="tab" onclick="setRole('student')">
-                            <i class="bi bi-mortarboard-fill"></i> Student
-                        </button>
-                        <button class="nav-link <?= ($selectedRole === 'admin') ? 'active' : '' ?>" id="adminTabBtn" type="button" role="tab" onclick="setRole('admin')">
-                            <i class="bi bi-shield-lock-fill"></i> Faculty / Admin
-                        </button>
-                    </div>
-
-                    <?php if (!empty($error)): ?>
-                        <div class="alert alert-danger alert-dismissible fade show small d-flex align-items-center" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill me-2 fs-6 flex-shrink-0"></i>
-                            <div><?= htmlspecialchars($error) ?></div>
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <?php endif; ?>
-
-                    <form method="POST" action="" id="loginForm" novalidate>
-                        <?= csrf_field() ?>
-                        <input type="hidden" name="role" id="roleInput" value="<?= htmlspecialchars($selectedRole) ?>">
-
-                        <div class="mb-3">
-                            <label for="username_or_email" class="form-label" id="usernameLabel">
-                                <?= ($selectedRole === 'admin') ? 'Faculty Email or Username' : 'Student Email or Username' ?>
-                            </label>
-                            <div class="input-group auth-input-group">
-                                <span class="input-group-text"><i class="bi bi-person" id="usernameIcon"></i></span>
-                                <input type="text" class="form-control" id="username_or_email" name="username_or_email" 
-                                       placeholder="<?= ($selectedRole === 'admin') ? 'admin@projectsphere.edu' : 'rahul@college.edu or rahul_sharma' ?>" 
-                                       value="<?= htmlspecialchars($_POST['username_or_email'] ?? '') ?>" required autofocus>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <div class="d-flex justify-content-between align-items-center mb-1">
-                                <label for="password" class="form-label mb-0">Password</label>
-                            </div>
-                            <div class="input-group auth-input-group">
-                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
-                                <button class="btn btn-outline-secondary password-toggle-btn" type="button" data-target="password" aria-label="Toggle password visibility">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-primary btn-lg auth-submit-btn" id="submitBtn">
-                                <span>Sign In</span> <i class="bi bi-arrow-right"></i>
-                            </button>
-                        </div>
-                    </form>
-
-                    <!-- Quick Demo Credentials Box for Testing Convenience -->
-                    <div class="demo-credentials-box">
+                    <div class="mb-3">
                         <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="fw-bold"><i class="bi bi-key-fill text-warning me-1"></i>Quick Test Logins:</span>
+                            <label for="password" class="form-label fw-semibold text-secondary small mb-0">Password</label>
                         </div>
-                        <div class="d-flex flex-wrap gap-2 mt-2">
-                            <button type="button" class="btn btn-outline-primary btn-copy-cred" onclick="fillCredentials('student', 'rahul@college.edu', 'student123')">
-                                <i class="bi bi-person me-1"></i>Fill Student
-                            </button>
-                            <button type="button" class="btn btn-outline-dark btn-copy-cred" onclick="fillCredentials('admin', 'admin@projectsphere.edu', 'admin123')">
-                                <i class="bi bi-shield-check me-1"></i>Fill Faculty
+                        <div class="input-group auth-input-group glass-input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                            <button class="btn btn-outline-secondary password-toggle-btn" type="button" data-target="password" aria-label="Toggle password visibility">
+                                <i class="bi bi-eye"></i>
                             </button>
                         </div>
                     </div>
 
-                    <div class="mt-4 pt-3 border-top text-center small text-secondary">
-                        <span id="registerPrompt">Don't have a student account?</span>
-                        <a href="<?= base_url('frontend/register.php') ?>" class="text-primary fw-semibold ms-1" id="registerLink">Register here</a>
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary auth-submit-btn glass-submit-btn" id="submitBtn">
+                            <span>Sign In</span> <i class="bi bi-arrow-right"></i>
+                        </button>
                     </div>
+                </form>
+
+                <!-- Quick Demo Credentials Box for Testing Convenience -->
+                <div class="demo-credentials-box glass-demo-box">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="fw-bold"><i class="bi bi-key-fill text-warning me-1"></i>Quick Test Logins:</span>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 mt-2">
+                        <button type="button" class="btn btn-outline-primary btn-copy-cred" onclick="fillCredentials('student', 'rahul@college.edu', 'student123')">
+                            <i class="bi bi-person me-1"></i>Fill Student
+                        </button>
+                        <button type="button" class="btn btn-outline-dark btn-copy-cred" onclick="fillCredentials('admin', 'admin@projectsphere.edu', 'admin123')">
+                            <i class="bi bi-shield-check me-1"></i>Fill Faculty
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-top text-center small text-secondary">
+                    <span id="registerPrompt">Don't have a student account?</span>
+                    <a href="<?= base_url('frontend/register.php') ?>" class="text-primary fw-semibold ms-1" id="registerLink">Register here</a>
                 </div>
             </div>
         </div>

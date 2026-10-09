@@ -73,67 +73,72 @@ $pageDescription = 'Sign in to the ProjectSphere Faculty & Evaluator Portal to r
 </head>
 <body class="bg-light">
 
-<div class="auth-page-wrapper">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-6 col-lg-5 col-xl-4">
-                <a class="auth-home-link" href="<?= base_url() ?>">
-                    <i class="bi bi-arrow-left"></i> Back to Catalog
-                </a>
+<div class="auth-page-wrapper glass-auth-wrapper">
+    <!-- Ambient Floating Orbs for Glass Refraction -->
+    <div class="glass-bg-orb glass-orb-1" aria-hidden="true"></div>
+    <div class="glass-bg-orb glass-orb-2" aria-hidden="true"></div>
+    <div class="glass-bg-orb glass-orb-3" aria-hidden="true"></div>
 
-                <div class="card auth-card p-4 p-sm-5">
-                    <div class="text-center mb-4">
-                        <a href="<?= base_url() ?>" class="d-inline-block mb-3">
-                            <img src="<?= base_url('frontend/assets/images/logo.svg') ?>" alt="ProjectSphere Logo" style="height: 40px;">
-                        </a>
+    <div class="container d-flex flex-column align-items-center">
+        <div class="auth-container-glass">
+            <a class="auth-home-link glass-back-link" href="<?= base_url() ?>">
+                <i class="bi bi-arrow-left"></i> <span>Back to Catalog</span>
+            </a>
+
+            <div class="card auth-card glass-auth-card">
+                <div class="text-center mb-4">
+                    <a href="<?= base_url() ?>" class="d-inline-block mb-3">
+                        <img src="<?= base_url('frontend/assets/images/logo.svg') ?>" alt="ProjectSphere Logo" style="height: 42px;">
+                    </a>
+                    <div>
                         <span class="auth-header-badge bg-dark text-white">
                             <i class="bi bi-shield-lock-fill"></i> Faculty & Staff Only
                         </span>
-                        <h2 class="h4 fw-bold text-dark mb-1">Evaluator Portal</h2>
-                        <p class="text-secondary small mb-0">Review capstones & award academic marks</p>
+                    </div>
+                    <h2 class="h4 fw-bold text-dark mb-1">Evaluator Portal</h2>
+                    <p class="text-secondary small mb-0">Review capstones & award academic marks</p>
+                </div>
+
+                <?php if (!empty($error)): ?>
+                    <div class="alert alert-danger alert-dismissible fade show small d-flex align-items-center shadow-sm" role="alert">
+                        <i class="bi bi-exclamation-octagon-fill me-2 fs-6 flex-shrink-0"></i>
+                        <div><?= htmlspecialchars($error) ?></div>
+                        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+
+                <form method="POST" action="" id="adminLoginForm">
+                    <?= csrf_field() ?>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary small" for="adminUsername">Faculty Username or Email</label>
+                        <div class="input-group auth-input-group glass-input-group">
+                            <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                            <input type="text" id="adminUsername" name="username_or_email" class="form-control" placeholder="admin@projectsphere.edu" required autofocus>
+                        </div>
                     </div>
 
-                    <?php if (!empty($error)): ?>
-                        <div class="alert alert-danger alert-dismissible fade show small d-flex align-items-center" role="alert">
-                            <i class="bi bi-exclamation-octagon-fill me-2 fs-6 flex-shrink-0"></i>
-                            <div><?= htmlspecialchars($error) ?></div>
-                            <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    <?php endif; ?>
-
-                    <form method="POST" action="" id="adminLoginForm">
-                        <?= csrf_field() ?>
-                        <div class="mb-3">
-                            <label class="form-label" for="adminUsername">Faculty Username or Email</label>
-                            <div class="input-group auth-input-group">
-                                <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
-                                <input type="text" id="adminUsername" name="username_or_email" class="form-control" placeholder="admin@projectsphere.edu" required autofocus>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label" for="adminPassword">Faculty Password</label>
-                            <div class="input-group auth-input-group">
-                                <span class="input-group-text"><i class="bi bi-lock"></i></span>
-                                <input type="password" name="password" id="adminPassword" class="form-control" placeholder="••••••••" required>
-                                <button class="btn btn-outline-secondary password-toggle-btn" type="button" data-target="adminPassword" aria-label="Toggle password visibility">
-                                    <i class="bi bi-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="d-grid mt-4">
-                            <button type="submit" class="btn btn-dark btn-lg auth-submit-btn">
-                                <i class="bi bi-box-arrow-in-right me-2"></i>Access Admin Panel
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-secondary small" for="adminPassword">Faculty Password</label>
+                        <div class="input-group auth-input-group glass-input-group">
+                            <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                            <input type="password" name="password" id="adminPassword" class="form-control" placeholder="••••••••" required>
+                            <button class="btn btn-outline-secondary password-toggle-btn" type="button" data-target="adminPassword" aria-label="Toggle password visibility">
+                                <i class="bi bi-eye"></i>
                             </button>
                         </div>
-                    </form>
-
-                    <div class="mt-4 pt-3 border-top text-center small text-secondary">
-                        <a href="<?= base_url('frontend/login.php?role=student') ?>" class="text-decoration-none fw-semibold">
-                            <i class="bi bi-mortarboard me-1"></i>Switch to Student Login
-                        </a>
                     </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-dark btn-lg auth-submit-btn">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Access Admin Panel
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-4 pt-3 border-top text-center small text-secondary">
+                    <a href="<?= base_url('frontend/login.php?role=student') ?>" class="text-decoration-none fw-semibold">
+                        <i class="bi bi-mortarboard me-1"></i>Switch to Student Login
+                    </a>
                 </div>
             </div>
         </div>

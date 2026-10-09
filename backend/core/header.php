@@ -232,11 +232,11 @@ $socialPreview = $requestScheme . $requestHost . base_url('frontend/assets/image
                         </ul>
                     </div>
                 <?php else: ?>
-                    <a href="<?= base_url('frontend/login.php') ?>" class="btn btn-sm btn-outline-primary fw-semibold d-inline-flex align-items-center gap-1.5 px-3 py-1.5 text-nowrap" style="border-radius: 8px;">
+                    <a href="<?= base_url('frontend/login.php') ?>" class="nav-auth-btn nav-auth-btn-login">
                         <i class="bi bi-box-arrow-in-right"></i>
                         <span>Login</span>
                     </a>
-                    <a href="<?= base_url('frontend/register.php') ?>" class="btn btn-sm btn-primary fw-semibold d-inline-flex align-items-center gap-1.5 px-3 py-1.5 text-nowrap" style="background-color: #4f46e5 !important; border-color: #4f46e5 !important; color: #ffffff !important; border-radius: 8px;">
+                    <a href="<?= base_url('frontend/register.php') ?>" class="nav-auth-btn nav-auth-btn-register">
                         <i class="bi bi-person-plus-fill"></i>
                         <span>Register</span>
                     </a>
