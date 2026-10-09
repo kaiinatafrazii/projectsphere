@@ -36,7 +36,9 @@ $stmt->execute([':id' => $projectId]);
 $project = $stmt->fetch();
 
 if (!$project) {
-    die("Project not found. <a href='" . base_url('frontend/browse.php') . "'>Back to catalog</a>");
+    $_SESSION['flash_error'] = 'The requested project could not be found.';
+    header('Location: ' . base_url('frontend/browse.php'));
+    exit;
 }
 
 // Check authorization: Non-approved projects can only be viewed by the project author or admin
@@ -65,7 +67,7 @@ $imgStmt = $pdo->prepare("SELECT * FROM project_images WHERE project_id = :pid O
 $imgStmt->execute([':pid' => $projectId]);
 $galleryImages = $imgStmt->fetchAll();
 
-$pageTitle = htmlspecialchars($project['title']) . ' - ProjectSphere';
+$pageTitle = ($project['title'] ?? 'Project Details') . ' - ProjectSphere';
 require_once __DIR__ . '/../backend/core/header.php';
 ?>
 

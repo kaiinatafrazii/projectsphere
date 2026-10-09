@@ -81,7 +81,7 @@ $gallery = $pdo->prepare("SELECT * FROM project_images WHERE project_id = :pid")
 $gallery->execute([':pid' => $projectId]);
 $screenshots = $gallery->fetchAll();
 
-$pageTitle = 'Review: ' . htmlspecialchars($project['title']) . ' - Faculty Portal';
+$pageTitle = 'Review: ' . ($project['title'] ?? 'Project') . ' - Faculty Portal';
 require_once __DIR__ . '/../../backend/core/header.php';
 ?>
 
